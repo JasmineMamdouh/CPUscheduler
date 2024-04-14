@@ -14,15 +14,15 @@ import java.util.Scanner;
 public class Priority_NonPreemptive {
 
     
-    private float avgTurnaroundTime;
-    private float avgWaitingTime;
+    static float avgTurnaroundTime;
+    static float avgWaitingTime;
     int totalTurnaroundTime = 0;
     int totalWaitingTime = 0;
     int currentTime = 0;
     int completed = 0;
     int[] isCompleted;
 
-    public void priorityScheduler(ArrayList<Process> processes) {
+    public ArrayList<Process> priorityScheduler(ArrayList<Process> processes) {
         
         ArrayList<Process> result = new ArrayList<>();
         int totalProcess = processes.size();
@@ -76,7 +76,9 @@ public class Priority_NonPreemptive {
         
         avgTurnaroundTime = (float) totalTurnaroundTime / totalProcess;
         avgWaitingTime = (float) totalWaitingTime / totalProcess;
-        
+
+        return result;
+        /*
         System.out.println("PID\tBurst\tPriority\tArrival\tCompletion");
         for (Process process : result) {
             System.out.println(process.getPid() + "\t" + process.getBurstTime() + "\t" + process.getPriority()
@@ -84,11 +86,15 @@ public class Priority_NonPreemptive {
         }
          System.out.println("Average Turnaround Time"+avgTurnaroundTime);
          System.out.println("Average waiting Time"+avgWaitingTime);
+         */
     }
 
     public static void main(String[] args) {
         
         ArrayList<Process> processes = new ArrayList<>();
+
+        ArrayList<Process> res = new ArrayList<>();
+
         //lecture example
         /*processes.add(new Process(1, 10, 3, 0));
         processes.add(new Process(2, 1, 1, 0));
@@ -110,7 +116,16 @@ public class Priority_NonPreemptive {
         }
         
         Priority_NonPreemptive pnp = new Priority_NonPreemptive();
-        pnp.priorityScheduler(processes);
+        res = pnp.priorityScheduler(processes);
+
+
+        System.out.println("PID\tBurst\tPriority\tArrival\tCompletion");
+        for (Process process : res) {
+            System.out.println(process.getPid() + "\t" + process.getBurstTime() + "\t" + process.getPriority()
+                    + "\t\t" + process.getArrivalTime() + "\t" + process.getCompletionTime());
+        }
+        System.out.println("Average Turnaround Time: "+avgTurnaroundTime);
+        System.out.println("Average waiting Time: "+avgWaitingTime);
     }
 }
 
