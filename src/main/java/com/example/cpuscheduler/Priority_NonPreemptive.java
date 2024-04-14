@@ -28,7 +28,7 @@ public class Priority_NonPreemptive {
         int totalProcess = processes.size();
         isCompleted = new int[totalProcess];
 
-        //check if there is process that isnot served
+        //check if there is process that is not served
         while (completed < totalProcess) {
             int minPriority = Integer.MAX_VALUE;
             int selectedProcessIdx = -1;
@@ -40,7 +40,7 @@ public class Priority_NonPreemptive {
                         minPriority = processes.get(i).getPriority();
                         selectedProcessIdx = i;
                     } 
-                    //incase 2 process have the same priority 
+                    //in case 2 process have the same priority
                     else if (processes.get(i).getPriority() == minPriority
                             && processes.get(i).getArrivalTime() < processes.get(selectedProcessIdx).getArrivalTime()) {
                         minPriority = processes.get(i).getPriority();
@@ -55,10 +55,10 @@ public class Priority_NonPreemptive {
                 selectedProcess.setCompletionTime(currentTime + selectedProcess.getBurstTime());
                 //selectedProcess.setTurnaroundTime(selectedProcess.getCompletionTime() - selectedProcess.getArrivalTime());
                 //selectedProcess.setWaitingTime(selectedProcess.getTurnaroundTime() - selectedProcess.getBurstTime());
-                selectedProcess.calculateTurnaroundTime();
-                selectedProcess.calculateWaitingTime();
-                totalTurnaroundTime += selectedProcess.getTurnaroundTime();
-                totalWaitingTime += selectedProcess.getWaitingTime();
+                //selectedProcess.calculateTurnaroundTime();
+                //selectedProcess.calculateWaitingTime();
+                totalTurnaroundTime += selectedProcess.calcTurnaroundTime();
+                totalWaitingTime += selectedProcess.calcWaitingTime();
                 isCompleted[selectedProcessIdx] = 1;
                 completed++;
                 currentTime = selectedProcess.getCompletionTime();
