@@ -1,15 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package ganttchart;
+package com.example.cpuscheduler;
 
-/**
- *
- * @author win10
- */
-
-public class Process {
+public class Process implements Comparable<Process> {
     int pid;
     int burstTime;
     int priority;
@@ -88,12 +79,29 @@ public class Process {
         this.arrivalTime = arrivalTime;
     }
 
-    public void setTurnaroundTime(int turnaroundTime) {
+    /*public void setTurnaroundTime(int turnaroundTime) {
         this.turnaroundTime = turnaroundTime;
     }
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
     }
-    
+*/
+
+
+    public void calculateTurnaroundTime(){
+        this.turnaroundTime = this.completionTime - this.arrivalTime;
+    }
+
+    public void calculateWaitingTime (){
+        this.waitingTime = this.turnaroundTime - this.burstTime;
+    }
+
+
+
+    @Override
+    public int compareTo(Process other) {
+        return Integer.compare(this.priority, other.priority);
+    }
+
 }

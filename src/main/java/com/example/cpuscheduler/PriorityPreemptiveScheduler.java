@@ -1,13 +1,8 @@
-/*
+package com.example.cpuscheduler;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package os_project;
 
-/**
- *
- * @author Mariz
- */
 import java.util.*;
 public class PriorityPreemptiveScheduler{
     public static void priorityPreemptive(List<Process> processes)
@@ -26,7 +21,7 @@ public class PriorityPreemptiveScheduler{
             if(!queue.isEmpty())
             {
                 Process p=queue.poll();
-                System.out.println("Executing process " + p.id + " at time " + time);
+                System.out.println("Executing process " + p.pid + " at time " + time);
                 time += 1;
                 p.burstTime-=1;
                 if(p.burstTime>0)
@@ -36,7 +31,7 @@ public class PriorityPreemptiveScheduler{
                 }
                 else
                 {
-                    System.out.println("Process " + p.id + " completed execution at time " + time);
+                    System.out.println("Process " + p.pid + " completed execution at time " + time);
                 }  
             }
             else
@@ -60,6 +55,7 @@ public class PriorityPreemptiveScheduler{
 }
 
 //Process Class
+/*
 class Process implements Comparable<Process>{
     int id;
     int arrivalTime;
@@ -90,4 +86,4 @@ class Process implements Comparable<Process>{
         return Integer.compare(this.priority, other.priority);
     }
     
-}
+}*/
