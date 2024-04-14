@@ -1,5 +1,5 @@
 
-package com.mycompany.priority_nonpreemptive;
+package com.example.cpuscheduler;
 
 /**
  *
