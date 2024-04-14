@@ -8,7 +8,7 @@ public class PriorityPreemptiveScheduler{
     public static void priorityPreemptive(List<Process> processes)
     {
         int time=0;
-        PriorityQueue<Process> queue = new PriorityQueue<>();
+        PriorityQueue<Process> queue = new PriorityQueue<>(Comparator.comparingInt(Process::getPriority));
         
         while(!processes.isEmpty() || !queue.isEmpty())
         {
@@ -22,7 +22,6 @@ public class PriorityPreemptiveScheduler{
             {
                 Process p=queue.poll();
                 System.out.println("Executing process " + p.pid + " at time " + time);
-                time += 1;
                 p.burstTime-=1;
                 if(p.burstTime>0)
                 {
@@ -32,7 +31,8 @@ public class PriorityPreemptiveScheduler{
                 else
                 {
                     System.out.println("Process " + p.pid + " completed execution at time " + time);
-                }  
+                }
+                time += 1;
             }
             else
             {
@@ -44,46 +44,12 @@ public class PriorityPreemptiveScheduler{
      public static void main(String[] args) {
         // Example processes
         List<Process> processes = new ArrayList<>();
-        processes.add(new Process(1, 0, 4, 2));
-        processes.add(new Process(2, 0, 4, 2));
-        processes.add(new Process(3, 2, 2, 3));
-        processes.add(new Process(4, 3, 1, 4));
+        processes.add(new Process(1, 4, 2, 0));
+        processes.add(new Process(2, 4, 2, 0));
+        processes.add(new Process(3, 2, 3, 2));
+        processes.add(new Process(4, 1, 4, 3));
 
         // Call scheduler
         priorityPreemptive(processes);
     }
 }
-
-//Process Class
-/*
-class Process implements Comparable<Process>{
-    int id;
-    int arrivalTime;
-    int remainingTime;
-    int burstTime;
-    int priority;
-    
-    public Process(int id,int arrivalTime,int burstTime,int priority)
-    {
-        this.id=id;
-        this.arrivalTime=arrivalTime;
-        this.burstTime=burstTime;
-        this.remainingTime=burstTime;
-        this.priority=priority;
-    }
-    //if the arrival time is not given
-    public Process(int id,int burstTime,int priority)
-    {
-        this.id=id;
-        this.arrivalTime=0;
-        this.burstTime=burstTime;
-        this.remainingTime=burstTime;
-        this.priority=priority;
-    }
-    // to gaurantee that processes are ordered in periority queue according to the periority attribute
-    @Override
-    public int compareTo(Process other) {
-        return Integer.compare(this.priority, other.priority);
-    }
-    
-}*/
