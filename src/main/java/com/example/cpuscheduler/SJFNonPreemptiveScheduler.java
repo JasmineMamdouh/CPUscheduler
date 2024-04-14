@@ -3,11 +3,8 @@ package com.example.cpuscheduler;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.example.cpuscheduler.Priority_NonPreemptive.avgTurnaroundTime;
-import static com.example.cpuscheduler.Priority_NonPreemptive.avgWaitingTime;
 
-
-public class SJFNonPreemptiveScheduler {
+public class SJFNonPreemptiveScheduler extends Priority_NonPreemptive{
     public ArrayList<Process> SJFNonPreemptive (ArrayList<Process> processes) {
 
         ArrayList<Process> result = new ArrayList<>();
@@ -39,7 +36,7 @@ public class SJFNonPreemptiveScheduler {
         processes.add(new Process(1, 8, 0));
         processes.add(new Process(2, 4, 1));
         processes.add(new Process(3, 9, 2));
-        processes.add(new Process(4, 5, 2));
+        processes.add(new Process(4, 5, 3));
         Average Turnaround Time: 14.25
         Average waiting Time: 7.75
 
@@ -53,7 +50,6 @@ public class SJFNonPreemptiveScheduler {
         for (int i = 0; i < n; i++) {
             int pid = scanner.nextInt();
             int burstTime = scanner.nextInt();
-            //int priority = scanner.nextInt();
             int arrivalTime = scanner.nextInt();
             processes.add(new Process(pid, burstTime, arrivalTime));
         }

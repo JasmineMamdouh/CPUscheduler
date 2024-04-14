@@ -9,7 +9,7 @@ public class Tests {
         Process p0 = new Process(0, 10, 0);
         Process p1 = new Process(1, 2, 2);
         Process p2 = new Process(2, 5, 0);
-        Process p3 = new Process(3, 2, 0, 8);
+        Process p3 = new Process(3, 2, 8);
 
         PriorityQueue<Process> list = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - px.getArrivalTime());
         list.add(p0);
@@ -21,7 +21,7 @@ public class Tests {
         SJFPreemptive scheduler = new SJFPreemptive();
 
         // Gui loop. (Needs to run every second)
-        // FInishes if no more processes are available or running in the scheduler
+        // Finishes if no more processes are available or running in the scheduler
         int time = 0;
         while (true) {
             while (!list.isEmpty() && time == list.peek().getArrivalTime()) {
