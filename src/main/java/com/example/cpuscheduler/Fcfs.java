@@ -1,3 +1,5 @@
+package com.example.cpuscheduler;
+
 import java.util.*;
 
 public class Fcfs {
