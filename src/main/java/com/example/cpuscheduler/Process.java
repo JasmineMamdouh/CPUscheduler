@@ -1,25 +1,29 @@
 package com.example.cpuscheduler;
 
-public class Process implements Comparable<Process> {
+public class Process {
     int pid;
     int burstTime;
     int priority;
     int arrivalTime;
-    int completionTime;
-    int turnaroundTime;
-    int waitingTime;
     int startTime;
+    int lastProcessedTime;
+    int remainingTime;
+    int completionTime;
 
 
     public Process(int pid, int burstTime, int priority, int arrivalTime) {
         this.pid = pid;
-        this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
-        this.completionTime = 0;
-        this.turnaroundTime = 0;
-        this.waitingTime = 0;
+        this.arrivalTime = arrivalTime;
         this.startTime = -1;
+        this.lastProcessedTime = -1;
+        this.remainingTime = burstTime;
+        this.completionTime = -1;
+    }
+
+    public Process(int pid, int burstTime, int arrivalTime) {
+        this(pid, burstTime, 5, arrivalTime);
     }
 
     public int getPid() {
@@ -38,31 +42,22 @@ public class Process implements Comparable<Process> {
         return arrivalTime;
     }
 
-    public int getCompletionTime() {
-        return completionTime;
-    }
-
-    public int getTurnaroundTime() {
-        return turnaroundTime;
-    }
-
-    public int getWaitingTime() {
-        return waitingTime;
-    }
-
     public int getStartTime() {
         return startTime;
     }
 
-    
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
+    public int getLastProcessedTime() {
+        return lastProcessedTime;
     }
 
-    public void setCompletionTime(int completionTime) {
-        this.completionTime = completionTime;
+    public int getRemainingTime() {
+        return remainingTime;
     }
-    
+
+    public int getCompletionTime() {
+        return completionTime;
+    }
+
     public void setPid(int pid) {
         this.pid = pid;
     }
@@ -78,30 +73,40 @@ public class Process implements Comparable<Process> {
     public void setArrivalTime(int arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
-
-    /*public void setTurnaroundTime(int turnaroundTime) {
-        this.turnaroundTime = turnaroundTime;
+    
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
     }
 
-    public void setWaitingTime(int waitingTime) {
-        this.waitingTime = waitingTime;
-    }
-*/
-
-
-    public void calculateTurnaroundTime(){
-        this.turnaroundTime = this.completionTime - this.arrivalTime;
+    public void setLastProcessedTime(int lastProcessedTime) {
+        this.lastProcessedTime = lastProcessedTime;
     }
 
-    public void calculateWaitingTime (){
-        this.waitingTime = this.turnaroundTime - this.burstTime;
+    public void setRemainingTime(int remainingTime) {
+        this.remainingTime = remainingTime;
     }
 
-
-
-    @Override
-    public int compareTo(Process other) {
-        return Integer.compare(this.priority, other.priority);
+    public void setCompletionTime(int completionTime) {
+        this.completionTime = completionTime;
     }
 
+    public int calcTurnaroundTime() {
+        return completionTime - arrivalTime;
+    }
+
+    public int calcWaitingTime() {
+        return completionTime - arrivalTime - burstTime;
+    }
+
+    public int calcResponseTime() {
+        return startTime - arrivalTime;
+    }
+    
+    public void decrement(int quantum) {
+        if (remainingTime < quantum) {
+            remainingTime = 0;
+        } else {
+            remainingTime -= quantum;
+        }
+    }
 }
