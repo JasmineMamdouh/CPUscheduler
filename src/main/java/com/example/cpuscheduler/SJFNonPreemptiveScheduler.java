@@ -1,3 +1,4 @@
+/*
 package com.example.cpuscheduler;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class SJFNonPreemptiveScheduler extends Priority_NonPreemptive{
 
         */
 
-        System.out.println("Please enter the number of processes:");
+  /*      System.out.println("Please enter the number of processes:");
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
 
@@ -69,3 +70,4 @@ public class SJFNonPreemptiveScheduler extends Priority_NonPreemptive{
 }
 
 
+*/
