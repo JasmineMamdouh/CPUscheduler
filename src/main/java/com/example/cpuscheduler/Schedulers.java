@@ -26,6 +26,33 @@ public class Schedulers {
         return ganttChart;
     }
 
+    public float calcAvgTurnaroundTime() {
+        int sum = 0;
+        for (Process process : completedProcesses) {
+            sum += process.calcTurnaroundTime();
+        }
+
+        return (float) sum / completedProcesses.size();
+    }
+
+    public float calcAvgWaitingTime() {
+        int sum = 0;
+        for (Process process : completedProcesses) {
+            sum += process.calcWaitingTime();
+        }
+
+        return (float) sum / completedProcesses.size();
+    }
+
+    public float calcAvgResponseTime() {
+        int sum = 0;
+        for (Process process : completedProcesses) {
+            sum += process.calcResponseTime();
+        }
+
+        return (float) sum / completedProcesses.size();
+    }
+
     public void updateGanttChart(Process p, int quantum) {
         if (!ganttChart.isEmpty()) {
             GanttProcess lastProcess = ganttChart.get(ganttChart.size() - 1);
