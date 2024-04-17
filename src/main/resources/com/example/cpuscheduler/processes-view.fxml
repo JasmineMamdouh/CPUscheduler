@@ -47,7 +47,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="startScheduling1" layoutX="36.0" layoutY="498.0" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Run Without Live Scheduling" textFill="#eeeeee">
+      <Button fx:id="startScheduling1" layoutX="36.0" layoutY="498.0" mnemonicParsing="false" onAction="#onNotLiveButtonClick" style="-fx-background-color: #3A98B9;" text="Run Without Live Scheduling" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font>
