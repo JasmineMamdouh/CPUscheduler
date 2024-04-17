@@ -5,9 +5,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
 public class ProcessController implements Initializable {
@@ -22,9 +24,9 @@ public class ProcessController implements Initializable {
     @FXML
     private Button addProcess;
 
-    private ArrayList<Process> processes = new ArrayList<>();
+    private PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
     private TableView<Process> table = new TableView<>();
-    TextField additionalField = new TextField();;
+    TextField additionalField = new TextField();
     @FXML
     protected void onAddButtonClick() {
         Process process;
@@ -44,6 +46,14 @@ public class ProcessController implements Initializable {
         }
         processes.add(process);
         table.getItems().add(process);
+    }
+
+    @FXML
+    protected void onNotLiveButtonClick() throws IOException {
+        NotLiveApplication notLiveApplication = new NotLiveApplication(processes);
+        Stage notLiveStage = new Stage();
+        notLiveApplication.start(notLiveStage);
+        notLiveStage.show();
     }
 
     @Override
