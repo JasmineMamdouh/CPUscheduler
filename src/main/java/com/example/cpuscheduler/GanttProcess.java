@@ -1,8 +1,8 @@
 package com.example.cpuscheduler;
 
 public class GanttProcess {
-    private int pid;
-    private int runningTime;
+    int pid;
+    int runningTime;
 
 
     public GanttProcess(int pid, int runningTime) {
