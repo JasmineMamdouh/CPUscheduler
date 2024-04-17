@@ -26,9 +26,6 @@ public class NotLiveApplication extends Application {
         switch (HelloController.processType) {
             case "FCFS" -> {
                 FirstComeFirstServe fcfs = new FirstComeFirstServe();
-                for (Process process : processes) {
-                    fcfs.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
@@ -42,9 +39,6 @@ public class NotLiveApplication extends Application {
             }
             case "Round Robin" -> {
                 RR roundRobin = new RR(2);
-                for (Process process : processes) {
-                    roundRobin.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
@@ -58,9 +52,6 @@ public class NotLiveApplication extends Application {
             }
             case "SJF Preemptive" -> {
                 SJFPreemptive sjfPreemptive = new SJFPreemptive();
-                for (Process process : processes) {
-                    sjfPreemptive.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
@@ -74,9 +65,6 @@ public class NotLiveApplication extends Application {
             }
             case "SJF Non-Preemptive" -> {
                 SJFNonPreemptive sjfNonPreemptive = new SJFNonPreemptive();
-                for (Process process : processes) {
-                    sjfNonPreemptive.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
@@ -90,9 +78,6 @@ public class NotLiveApplication extends Application {
             }
             case "Priority Preemptive" -> {
                 PriorityPreemptive priorityPreemptive = new PriorityPreemptive();
-                for (Process process : processes) {
-                    priorityPreemptive.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
@@ -106,9 +91,6 @@ public class NotLiveApplication extends Application {
             }
             case "Priority Non-Preemptive" -> {
                 Priority_NonPreemptive priorityNonPreemptive = new Priority_NonPreemptive();
-                for (Process process : processes) {
-                    priorityNonPreemptive.enqueue(process);
-                }
                 int time = 0;
                 while (true) {
                     while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
