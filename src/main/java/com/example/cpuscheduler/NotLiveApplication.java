@@ -14,95 +14,43 @@ import java.util.PriorityQueue;
 
 public class NotLiveApplication extends Application {
     private PriorityQueue<Process> processes;
+
     NotLiveApplication(PriorityQueue<Process> processes){
         this.processes = processes;
     }
+
+    private ArrayList<GanttProcess> startScheduler(Schedulers scheduler) {
+        int time = 0;
+        while (true) {
+            while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
+                scheduler.enqueue(processes.poll());
+            }
+
+            if (!scheduler.fetchNextTask(time) && processes.isEmpty())
+                break;
+            time++;
+        }
+        return scheduler.getGanttChart();
+    }
+
     private TableView<GanttProcess> table = new TableView<>();
+
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Not Live Scheduling");
-        ArrayList<GanttProcess> ganttProcesses = new ArrayList<>();
-
+        
+        Schedulers scheduler;
         switch (HelloController.processType) {
-            case "FCFS" -> {
-                FirstComeFirstServe fcfs = new FirstComeFirstServe();
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        fcfs.enqueue(processes.poll());
-                    }
-                    if (!fcfs.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = fcfs.getGanttChart();
-            }
-            case "Round Robin" -> {
-                RR roundRobin = new RR(2);
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        roundRobin.enqueue(processes.poll());
-                    }
-                    if (!roundRobin.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = roundRobin.getGanttChart();
-            }
-            case "SJF Preemptive" -> {
-                SJFPreemptive sjfPreemptive = new SJFPreemptive();
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        sjfPreemptive.enqueue(processes.poll());
-                    }
-                    if (!sjfPreemptive.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = sjfPreemptive.getGanttChart();
-            }
-            case "SJF Non-Preemptive" -> {
-                SJFNonPreemptive sjfNonPreemptive = new SJFNonPreemptive();
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        sjfNonPreemptive.enqueue(processes.poll());
-                    }
-                    if (!sjfNonPreemptive.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = sjfNonPreemptive.getGanttChart();
-            }
-            case "Priority Preemptive" -> {
-                PriorityPreemptive priorityPreemptive = new PriorityPreemptive();
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        priorityPreemptive.enqueue(processes.poll());
-                    }
-                    if (!priorityPreemptive.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = priorityPreemptive.getGanttChart();
-            }
-            case "Priority Non-Preemptive" -> {
-                Priority_NonPreemptive priorityNonPreemptive = new Priority_NonPreemptive();
-                int time = 0;
-                while (true) {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        priorityNonPreemptive.enqueue(processes.poll());
-                    }
-                    if (!priorityNonPreemptive.fetchNextTask(time) && processes.isEmpty())
-                        break;
-                    time++;
-                }
-                ganttProcesses = priorityNonPreemptive.getGanttChart();
-            }
+            case "FCFS" -> scheduler = new FirstComeFirstServe();
+            case "Round Robin" -> scheduler = new RR(3);
+            case "SJF Non-Preemptive" -> scheduler = new SJFNonPreemptive();
+            case "SJF Preemptive" -> scheduler = new SJFPreemptive();
+            case "Priority Non-Preemptive" -> scheduler = new Priority_NonPreemptive();
+            case "Priority Preemptive" -> scheduler = new PriorityPreemptive();
+            default -> scheduler = new FirstComeFirstServe();
         }
+
+        ArrayList<GanttProcess> ganttProcesses = this.startScheduler(scheduler);
 
         TableColumn<GanttProcess, Integer> pidColumn = new TableColumn<>("PID");
         pidColumn.setCellValueFactory(new PropertyValueFactory<GanttProcess, Integer>("pid"));
@@ -117,6 +65,7 @@ public class NotLiveApplication extends Application {
         table.setPrefWidth(350);
         table.setPrefHeight(350);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        System.out.println("Gantt Chart Reached = " + ganttProcesses.size());
         for(GanttProcess ganttProcess: ganttProcesses) {
             table.getItems().add(ganttProcess);
         }
