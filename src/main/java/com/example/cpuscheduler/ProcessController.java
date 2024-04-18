@@ -5,10 +5,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
@@ -23,6 +25,13 @@ public class ProcessController implements Initializable {
     private Pane pane;
     @FXML
     private Button addProcess;
+    @FXML
+    private Button startScheduling;
+
+
+    int quantum = 0;
+    HashMap<Integer, Color> colors = new HashMap<>();
+
 
     private PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
     private TableView<Process> table = new TableView<>();
@@ -37,14 +46,23 @@ public class ProcessController implements Initializable {
                     Integer.parseInt(additionalField.getText()),
                     Integer.parseInt(arrivalTime.getText())
             );
-        }else{
+        } else {
             process = new Process(
                     Integer.parseInt(pid.getText()),
                     Integer.parseInt(burstTime.getText()),
                     Integer.parseInt(arrivalTime.getText())
             );
+
+            if (HelloController.processType.contains("Round")) {
+                quantum = Integer.parseInt(additionalField.getText());
+            }
         }
         processes.add(process);
+        double red = Math.random();
+        double green = Math.random();
+        double blue = Math.random();
+        Color color = Color.color(red, green, blue);
+        colors.put(process.getPid(), color);
         table.getItems().add(process);
     }
 
@@ -54,6 +72,14 @@ public class ProcessController implements Initializable {
         Stage notLiveStage = new Stage();
         notLiveApplication.start(notLiveStage);
         notLiveStage.show();
+    }
+
+    @FXML
+    protected void onRunLive() throws IOException {
+        GanttApplication ganttChart = new GanttApplication(processes, colors);
+        Stage  GanttStage = new Stage();
+        ganttChart.start( GanttStage);
+        GanttStage.show();
     }
 
     @Override
@@ -85,6 +111,16 @@ public class ProcessController implements Initializable {
             priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
 
             table.getColumns().add(priorityColumn);
+        }
+        else if (HelloController.processType.contains("Round")) {
+            additionalField.setPromptText("Quantum");
+            additionalField.setLayoutX(28);
+            additionalField.setLayoutY(134);
+            additionalField.setPrefWidth(85);
+            pane.getChildren().add(additionalField);
+            addProcess.setLayoutX(224);
+            //  RR scheduler = new RR(Integer.parseInt(addProcess.getText()));
+
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         pane.getChildren().add(table);
