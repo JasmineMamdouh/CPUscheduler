@@ -117,6 +117,7 @@ public class NotLiveApplication extends Application {
         int yAxis = 470;
         Map<Integer, Color> processColorMap = new HashMap<>();
 
+        int time = 0;
         //Gantt Chart
         for(GanttProcess ganttProcess: ganttProcesses) {
             Color color = processColorMap.get(ganttProcess.getPid());
@@ -138,7 +139,8 @@ public class NotLiveApplication extends Application {
 
             double endX = rectangle.getX() + rectangle.getWidth();
 
-            Text timeText = new Text(String.valueOf(ganttProcess.getRunningTime()) + "s");
+            time += ganttProcess.getRunningTime();
+            Text timeText = new Text(String.valueOf(time) + "s");
             timeText.setFont(new Font(10));
 
             timeText.setX(endX - timeText.getLayoutBounds().getWidth() - 2); // Adjust padding as needed
