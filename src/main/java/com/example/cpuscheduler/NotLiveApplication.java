@@ -132,10 +132,10 @@ public class NotLiveApplication extends Application {
                 processColorMap.put(ganttProcess.getPid(), color);
             }
 
-            Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime()*30, 15, color);
+            Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime() * 30, 15, color);
             rectangle.setX(xAxis);
             rectangle.setY(yAxis);
-            xAxis += ganttProcess.getRunningTime()*30;
+            xAxis += ganttProcess.getRunningTime() * 30;
 
             double endX = rectangle.getX() + rectangle.getWidth();
 
@@ -151,9 +151,34 @@ public class NotLiveApplication extends Application {
 
             processName.setX(rectangle.getX() + 10); // Adjust padding as needed
             processName.setY(rectangle.getY() + 10);
-            layout.getChildren().addAll(rectangle,processName, timeText);
+            layout.getChildren().addAll(rectangle, processName, timeText);
         }
 
+        //adding labels for the average waiting time and average turn around time
+        Label avgWaitingTimeLabel = new Label("Average Waiting Time:");
+        avgWaitingTimeLabel.setLayoutX(10.0);
+        avgWaitingTimeLabel.setLayoutY(510.0);
+        avgWaitingTimeLabel.setFont(new Font(14.0));
+        layout.getChildren().add(avgWaitingTimeLabel);
+
+        Label avgTurnaroundTimeLabel = new Label("Average Turnaround Time:");
+        avgTurnaroundTimeLabel.setLayoutX(10.0);
+        avgTurnaroundTimeLabel.setLayoutY(530.0);
+        avgTurnaroundTimeLabel.setFont(new Font(14.0));
+        layout.getChildren().add(avgTurnaroundTimeLabel);
+
+        // Set text of the labels to display the averages
+        Label avgWaitingTimeValueLabel = new Label(String.format("%.2f", scheduler.calcAvgWaitingTime()) + "s");
+        avgWaitingTimeValueLabel.setLayoutX(200.0);
+        avgWaitingTimeValueLabel.setLayoutY(510.0);
+        avgWaitingTimeValueLabel.setFont(new Font(14.0));
+        layout.getChildren().add(avgWaitingTimeValueLabel);
+
+        Label avgTurnaroundTimeValueLabel = new Label(String.format("%.2f", scheduler.calcAvgTurnaroundTime()) + "s");
+        avgTurnaroundTimeValueLabel.setLayoutX(200.0);
+        avgTurnaroundTimeValueLabel.setLayoutY(530.0);
+        avgTurnaroundTimeValueLabel.setFont(new Font(14.0));
+        layout.getChildren().add(avgTurnaroundTimeValueLabel);
 
 
         layout.setStyle("-fx-background-color: #EEEEEE");
