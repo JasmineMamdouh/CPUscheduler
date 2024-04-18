@@ -3,7 +3,7 @@ package com.example.cpuscheduler;
 import java.util.ArrayList;
 import java.util.Queue;
 
-public class Schedulers {
+public abstract class Schedulers {
     Queue<Process> queue;
     ArrayList<Process> completedProcesses;
     ArrayList<GanttProcess> ganttChart;
@@ -17,6 +17,8 @@ public class Schedulers {
     public void enqueue(Process p) {
         queue.add(p);
     }
+
+    public abstract boolean fetchNextTask(int time);
 
     public ArrayList<Process> getCompletedProcesses() {
         return completedProcesses;
