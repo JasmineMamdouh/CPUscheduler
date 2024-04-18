@@ -13,11 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import kotlin.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
 
 public class NotLiveApplication extends Application {
     private PriorityQueue<Process> processes;
@@ -113,14 +112,23 @@ public class NotLiveApplication extends Application {
 
         int xAxis = 10;
         int yAxis = 470;
+        Map<Integer, Color> processColorMap = new HashMap<>();
+
         //Gantt Chart
         for(GanttProcess ganttProcess: ganttProcesses) {
-            Random random = new Random();
-            double red = Math.random();
-            double green = Math.random();
-            double blue = Math.random();
-            Color randomColor = Color.color(red, green, blue);
-            Rectangle rectangle = new Rectangle(ganttProcess.runningTime*20, 15, randomColor);
+            Color color = processColorMap.get(ganttProcess.getPid());
+
+            if (color == null) {
+                // Generate random color if new PID
+                Random random = new Random();
+                double red = Math.random();
+                double green = Math.random();
+                double blue = Math.random();
+                color = Color.color(red, green, blue);
+                processColorMap.put(ganttProcess.getPid(), color);
+            }
+
+            Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime()*20, 15, color);
             rectangle.setX(xAxis);
             rectangle.setY(yAxis);
             xAxis += ganttProcess.runningTime*20;
