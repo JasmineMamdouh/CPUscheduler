@@ -65,7 +65,6 @@ public class NotLiveApplication extends Application {
         table.setPrefWidth(350);
         table.setPrefHeight(350);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        System.out.println("Gantt Chart Reached = " + ganttProcesses.size());
         for(GanttProcess ganttProcess: ganttProcesses) {
             table.getItems().add(ganttProcess);
         }
