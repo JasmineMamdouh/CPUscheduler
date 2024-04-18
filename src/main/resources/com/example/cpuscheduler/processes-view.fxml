@@ -10,9 +10,9 @@
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="887.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.ProcessController">
    <children>
       <TextField fx:id="pid" layoutX="28.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Process ID" />
-      <TextField fx:id="arrivalTime" layoutX="141.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Arrival Time" />
-      <TextField fx:id="burstTime" layoutX="260.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Burst Time" />
-      <Button fx:id="addProcess" layoutX="135.0" layoutY="185.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
+      <TextField fx:id="arrivalTime" layoutX="140.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Arrival Time" />
+      <TextField fx:id="burstTime" layoutX="254.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Burst Time" />
+      <Button fx:id="addProcess" layoutX="126.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font></Button>
@@ -52,6 +52,5 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="arrivalTime1" layoutX="141.0" layoutY="134.0" prefHeight="25.0" prefWidth="85.0" promptText="Color" />
    </children>
 </Pane>

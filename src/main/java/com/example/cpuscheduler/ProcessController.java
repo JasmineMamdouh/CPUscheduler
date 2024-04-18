@@ -102,10 +102,10 @@ public class ProcessController implements Initializable {
         if(HelloController.processType.contains("Priority")){
             additionalField.setPromptText("Priority");
             additionalField.setLayoutX(28);
-            additionalField.setLayoutY(173);
+            additionalField.setLayoutY(145);
             additionalField.setPrefWidth(85);
             pane.getChildren().add(additionalField);
-            addProcess.setLayoutX(224);
+            addProcess.setLayoutX(226);
 
             TableColumn<Process, Integer> priorityColumn = new TableColumn<>("Priority");
             priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
@@ -115,7 +115,7 @@ public class ProcessController implements Initializable {
         else if (HelloController.processType.contains("Round")) {
             additionalField.setPromptText("Quantum");
             additionalField.setLayoutX(28);
-            additionalField.setLayoutY(134);
+            additionalField.setLayoutY(145);
             additionalField.setPrefWidth(85);
             pane.getChildren().add(additionalField);
             addProcess.setLayoutX(224);
