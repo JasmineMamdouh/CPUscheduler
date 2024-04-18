@@ -21,9 +21,11 @@ import java.util.*;
 
 public class NotLiveApplication extends Application {
     private PriorityQueue<Process> processes;
+    private int quantum;
 
-    NotLiveApplication(PriorityQueue<Process> processes){
+    NotLiveApplication(PriorityQueue<Process> processes, int quantum){
         this.processes = processes;
+        this.quantum = quantum;
     }
 
     private ArrayList<GanttProcess> startScheduler(Schedulers scheduler) {
@@ -84,7 +86,7 @@ public class NotLiveApplication extends Application {
         Schedulers scheduler;
         switch (HelloController.processType) {
             case "FCFS" -> scheduler = new FirstComeFirstServe();
-            case "Round Robin" -> scheduler = new RR(3);
+            case "Round Robin" -> scheduler = new RR(quantum);
             case "SJF Non-Preemptive" -> scheduler = new SJFNonPreemptive();
             case "SJF Preemptive" -> scheduler = new SJFPreemptive();
             case "Priority Non-Preemptive" -> scheduler = new Priority_NonPreemptive();

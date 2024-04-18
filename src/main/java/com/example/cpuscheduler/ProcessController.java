@@ -68,7 +68,7 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
-        NotLiveApplication notLiveApplication = new NotLiveApplication(processes);
+        NotLiveApplication notLiveApplication = new NotLiveApplication(processes, quantum);
         Stage notLiveStage = new Stage();
         notLiveApplication.start(notLiveStage);
         notLiveStage.show();
