@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import kotlin.Pair;
 
@@ -128,19 +129,32 @@ public class NotLiveApplication extends Application {
                 processColorMap.put(ganttProcess.getPid(), color);
             }
 
-            Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime()*20, 15, color);
+            Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime()*30, 15, color);
             rectangle.setX(xAxis);
             rectangle.setY(yAxis);
-            xAxis += ganttProcess.runningTime*20;
+            xAxis += ganttProcess.getRunningTime()*30;
 
-            layout.getChildren().add(rectangle);
+            double endX = rectangle.getX() + rectangle.getWidth();
+
+            Text timeText = new Text(String.valueOf(ganttProcess.getRunningTime()) + "s");
+            timeText.setFont(new Font(10));
+
+            timeText.setX(endX - timeText.getLayoutBounds().getWidth() - 2); // Adjust padding as needed
+            timeText.setY(rectangle.getY() + rectangle.getHeight() + 10);
+
+            Text processName = new Text("P" + ganttProcess.getPid()); // Adjust format if needed
+            processName.setFont(new Font(10)); // Adjust font size and style as desired
+
+            processName.setX(rectangle.getX() + 10); // Adjust padding as needed
+            processName.setY(rectangle.getY() + 10);
+            layout.getChildren().addAll(rectangle,processName, timeText);
         }
 
 
 
         layout.setStyle("-fx-background-color: #EEEEEE");
         layout.getChildren().add(table);
-        Scene scene = new Scene(layout,370,500);
+        Scene scene = new Scene(layout,370,520);
         stage.setScene(scene);
         stage.show();
     }
