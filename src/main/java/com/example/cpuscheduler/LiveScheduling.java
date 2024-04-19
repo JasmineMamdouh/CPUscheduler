@@ -222,7 +222,7 @@ public class LiveScheduling extends Application implements Runnable {
         mainLayout.setStyle("-fx-background-color: #EEEEEE");
         mainLayout.getChildren().addAll(label, table,label2);
 
-        Scene scene = new Scene(mainLayout, 700, 780);
+        Scene scene = new Scene(mainLayout, 820, 780);
         stage.setScene(scene);
         stage.setTitle("Scheduling Table");
 
