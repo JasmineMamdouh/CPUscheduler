@@ -66,4 +66,16 @@ public abstract class Schedulers {
 
         ganttChart.add(new GanttProcess(p, quantum));
     }
+
+    public void updateGanttChart(int pid, int quantum) {
+        if (!ganttChart.isEmpty()) {
+            GanttProcess lastProcess = ganttChart.get(ganttChart.size() - 1);
+            if (lastProcess.getPid() == pid) {
+                lastProcess.increment(quantum);
+                return;
+            }
+        }
+
+        ganttChart.add(new GanttProcess(pid, quantum));
+    }
 }

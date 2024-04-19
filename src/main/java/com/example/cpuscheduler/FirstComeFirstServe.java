@@ -10,6 +10,7 @@ public class FirstComeFirstServe extends Schedulers{
     public boolean fetchNextTask(int time) {
         Process running = queue.peek();
         if (running == null) {
+            updateGanttChart(-1, 1);
             return false;
         }
 

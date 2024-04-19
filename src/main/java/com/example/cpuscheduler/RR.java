@@ -16,6 +16,7 @@ public class RR extends Schedulers {
     public boolean fetchNextTask(int time) {
         Process running = queue.peek(); //acessing head of Queue
         if (running == null) {
+            updateGanttChart(-1, 1);
             return false; //return false if queue is empty
         }
         if (running.getStartTime() == -1) {

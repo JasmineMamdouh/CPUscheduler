@@ -10,6 +10,7 @@ public class SJFPreemptive extends Schedulers{
     public boolean fetchNextTask(int time) {
         Process running = queue.poll();
         if (running == null) {
+            updateGanttChart(-1, 1);
             return false;
         }
     

@@ -18,6 +18,7 @@ public class SJFNonPreemptive extends Schedulers {
         }
 
         if (running == null && queue.peek() == null){
+            updateGanttChart(-1, 1);
             return false;
         }
 

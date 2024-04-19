@@ -27,6 +27,7 @@ public class Priority_NonPreemptive extends Schedulers {
     
         
         if (running == null && queue.peek()==null) {
+            updateGanttChart(-1, 1);
             return false;
         }
     
