@@ -67,7 +67,9 @@ public class ProcessController implements Initializable {
                     Integer.parseInt(additionalField.getText()),
                     Integer.parseInt(arrivalTime.getText())
             );
-        } else {
+            additionalField.clear();
+        }
+        else {
             process = new Process(
                     Integer.parseInt(pid.getText()),
                     Integer.parseInt(burstTime.getText()),
@@ -86,6 +88,11 @@ public class ProcessController implements Initializable {
         Color color = Color.color(red, green, blue);
         colors.put(process.getPid(), color);
         table.getItems().add(process);
+
+        // Clearing the fields
+        pid.clear();
+        arrivalTime.clear();
+        burstTime.clear();
     }
 
 
