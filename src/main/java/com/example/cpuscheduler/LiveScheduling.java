@@ -27,37 +27,75 @@ public class LiveScheduling extends Application implements Runnable {
     private TableView<Process> table = new TableView<>();
     private PriorityQueue<Process> processes;
     private ObservableList<Process> processesList = FXCollections.observableArrayList();
-    ScheduledFuture<?> t;
-    Schedulers scheduler;
-    int time = 0;
+    private ScheduledFuture<?> t;
+    private Schedulers scheduler;
+    private int time = 0;
+    private HashMap<Integer, Color> colors;
+    private ArrayList<GanttProcess> ganttChart;
+    private Pane layout;
+    private Text timeText;
+    private int lastx = 20;
+    private int y = 50;
+    private int last_pid = -1;
 
-    LiveScheduling(PriorityQueue<Process> processes){
+    LiveScheduling(PriorityQueue<Process> processes, HashMap<Integer, Color> colors) {
         this.processes = processes;
+        this.colors = colors;
     }
 
     @Override
     public void run() {
         try {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                        scheduler.enqueue(processes.peek());
-                        // table.getItems().add(processes.poll());
-                        processesList.add(processes.poll());
-                    }
-
-                    processesList.sort((p1, p2) -> p1.getStartTime() - p2.getStartTime());
-
-                    table.refresh();
-
-                    if (!scheduler.fetchNextTask(time) && processes.isEmpty()) {
-                        t.cancel(false);
-                        return;
-                    }
-
-                    time++;
+            Platform.runLater(() -> {
+                while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
+                    scheduler.enqueue(processes.peek());
+                    processesList.add(processes.poll());
                 }
+
+                processesList.sort((p1, p2) -> p1.getStartTime() - p2.getStartTime());
+
+                table.refresh();
+
+                boolean running = scheduler.fetchNextTask(time);
+
+                timeText.setText("Time = " + time + "second");
+
+                int length = 30;
+                int width = 20;
+                Text text;
+
+                if (!running && processes.isEmpty()) {
+                    text = new Text(time + "");
+                    text.setX(lastx);
+                    text.setY(y + width + 20);
+                    text.setFill(Color.DARKBLUE);
+                    layout.getChildren().add(text);
+                    t.cancel(false);
+                    return;
+                }
+
+                ganttChart = scheduler.getGanttChart();
+                int current_pid = ganttChart.get(ganttChart.size() - 1).getPid();
+                Color color = colors.get(current_pid);
+
+                if (current_pid != last_pid) {
+                    last_pid = current_pid;
+                    text = new Text(time + "");
+                    text.setX(lastx);
+                    text.setY(y + width + 20);
+                    text.setFill(Color.DARKBLUE);
+                    layout.getChildren().add(text);
+                }
+
+                Rectangle rectangle = new Rectangle(length, width);
+                rectangle.setX(lastx);
+                rectangle.setY(y);
+                lastx += length;
+                rectangle.setFill(color);
+
+                layout.getChildren().add(rectangle);
+
+                time++;
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -65,40 +103,60 @@ public class LiveScheduling extends Application implements Runnable {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
+        VBox mainLayout = new VBox(); // Use VBox for vertical stacking
 
-        AnchorPane layout = new AnchorPane();
         Label label = new Label("Scheduling Table");
-
-        // Set properties
-        label.setAlignment(Pos.CENTER);
-        label.setLayoutX(10.0);
-        label.setLayoutY(10.0);
-        label.setPrefHeight(40.0);
-        label.setPrefWidth(350.0);
+        label.setAlignment(javafx.geometry.Pos.CENTER);
         label.setStyle("-fx-background-color: #E8D5C4; -fx-border-radius: 10px;");
+        label.setPrefHeight(40.0);
+        label.setFont(new javafx.scene.text.Font(24.0));
 
-        // Set font size
-        label.setFont(new Font(24.0));
-
-        Glow glow = new Glow();
-        label.setEffect(glow);
-        layout.getChildren().add(label);
-
-        // Set properties
         Label label2 = new Label("Gantt Chart");
-        label2.setAlignment(Pos.CENTER);
-        label2.setLayoutX(20.0);
-        label2.setLayoutY(400.0);
-        label2.setPrefHeight(40.0);
-        label2.setPrefWidth(350.0);
+        label2.setAlignment(javafx.geometry.Pos.CENTER);
         label2.setStyle("-fx-background-color: #E8D5C4; -fx-border-radius: 10px;");
+        label2.setPrefHeight(40.0);
+        label2.setFont(new javafx.scene.text.Font(24.0));
+        label2.setLayoutX(10.0);
+        label2.setLayoutY(420.0);
 
-        // Set font size
-        label2.setFont(new Font(24.0));
-        label2.setEffect(glow);
 
-        layout.getChildren().add(label2);
+        TableColumn<Process, Integer> pidColumn = new TableColumn<>("PID");
+        pidColumn.setCellValueFactory(new PropertyValueFactory<>("pid"));
+
+        TableColumn<Process, Integer> startColumn = new TableColumn<>("Start Time");
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+
+        TableColumn<Process, Integer> burstColumn = new TableColumn<>("Remaining Time");
+        burstColumn.setCellValueFactory(new PropertyValueFactory<>("remainingTime"));
+
+        TableColumn<Process, Integer> endColumn = new TableColumn<>("End Time");
+        endColumn.setCellValueFactory(new PropertyValueFactory<>("completionTime"));
+
+        table.getColumns().addAll(pidColumn, startColumn, burstColumn, endColumn);
+        table.setPrefWidth(370);
+        table.setPrefHeight(350);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setItems(processesList);
+
+        mainLayout.setStyle("-fx-background-color: #EEEEEE");
+        mainLayout.getChildren().addAll(label, table,label2);
+
+        Scene scene = new Scene(mainLayout, 700, 620);
+        stage.setScene(scene);
+        stage.setTitle("Scheduling Table");
+
+        layout = new Pane();
+        layout.setStyle("-fx-background-color: #EEEEEE");
+        timeText = new Text("Time = " + time + "second");
+        timeText.setX(lastx);
+        timeText.setY(y);
+
+        mainLayout.getChildren().add(layout);
+        layout.getChildren().add(timeText);
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        t = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
 
         switch (HelloController.processType) {
             case "FCFS" -> scheduler = new FirstComeFirstServe();
@@ -110,43 +168,10 @@ public class LiveScheduling extends Application implements Runnable {
             default -> scheduler = new FirstComeFirstServe();
         }
 
-        TableColumn<Process, Integer> pidColumn = new TableColumn<>("PID");
-        pidColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("pid"));
-
-        TableColumn<Process, Integer> startColumn = new TableColumn<>("Start Time");
-        startColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("startTime"));
-
-        TableColumn<Process, Integer> burstColumn = new TableColumn<>("Remaining Time");
-        burstColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("remainingTime"));
-
-        TableColumn<Process, Integer> endColumn = new TableColumn<>("End Time");
-        endColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("completionTime"));
-
-
-
-
-        // Add columns to the table
-        table.getColumns().addAll(pidColumn, startColumn,burstColumn,endColumn);
-        table.setLayoutX(20);
-        table.setLayoutY(60);
-        table.setPrefWidth(350);
-        table.setPrefHeight(350);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        table.setItems(processesList);
-
-        layout.setStyle("-fx-background-color: #EEEEEE");
-        layout.getChildren().add(table);
-        Scene scene = new Scene(layout,370,520);
-        stage.setScene(scene);
         stage.show();
-
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        t = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
