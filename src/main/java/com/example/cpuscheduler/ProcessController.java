@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,13 +35,6 @@ public class ProcessController implements Initializable {
     int quantum = 0;
     HashMap<Integer, Color> colors = new HashMap<>();
 
-
-    private PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
-
-    private TableView<Process> table = new TableView<>();
-
-    TextField additionalField = new TextField();
-
     public PriorityQueue<Process> onClick()
     {
         PriorityQueue<Process> p = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
@@ -55,37 +50,69 @@ public class ProcessController implements Initializable {
         }
         return p;
     }
+    private final PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+    private final TableView<Process> table = new TableView<>();
+    private final TextField additionalField = new TextField();
+    private final Text failText = new Text("");
+    private boolean quantumSet = false;
 
     @FXML
-
     protected void onAddButtonClick() {
+        boolean safe = true;
         Process process;
-        if (HelloController.processType.contains("Priority")) {
-            process = new Process(
-                    Integer.parseInt(pid.getText()),
-                    Integer.parseInt(burstTime.getText()),
-                    Integer.parseInt(additionalField.getText()),
-                    Integer.parseInt(arrivalTime.getText())
-            );
-        } else {
-            process = new Process(
-                    Integer.parseInt(pid.getText()),
-                    Integer.parseInt(burstTime.getText()),
-                    Integer.parseInt(arrivalTime.getText())
-            );
-
-            if (HelloController.processType.contains("Round") && quantum == 0) {
-                quantum = Integer.parseInt(additionalField.getText());
-                additionalField.setDisable(true); // Disable the additional field after setting the quantum
+        failText.setText("");
+        if(
+                pid.getText().isEmpty()
+                || burstTime.getText().isEmpty()
+                || arrivalTime.getText().isEmpty()
+        ) {
+            safe = false;
+            failText.setText("Please Fill All The Fields");
+        }
+        if (HelloController.processType.contains("Priority")
+                || (HelloController.processType.contains("Round") && !quantumSet)) {
+            if(additionalField.getText().isEmpty()) {
+                safe = false;
+                failText.setText("Please Fill All The Fields");
             }
         }
-        processes.add(process);
-        double red = Math.random();
-        double green = Math.random();
-        double blue = Math.random();
-        Color color = Color.color(red, green, blue);
-        colors.put(process.getPid(), color);
-        table.getItems().add(process);
+        if(safe){
+            for (Process proc : processes) {
+                if (proc.getPid() == Integer.parseInt(pid.getText())) {
+                    safe = false;
+                    failText.setText("This PID Already Exists.");
+                }
+            }
+        }
+        if(safe) {
+            if (HelloController.processType.contains("Priority")) {
+                process = new Process(
+                        Integer.parseInt(pid.getText()),
+                        Integer.parseInt(burstTime.getText()),
+                        Integer.parseInt(additionalField.getText()),
+                        Integer.parseInt(arrivalTime.getText())
+                );
+            } else {
+                process = new Process(
+                        Integer.parseInt(pid.getText()),
+                        Integer.parseInt(burstTime.getText()),
+                        Integer.parseInt(arrivalTime.getText())
+                );
+
+                if (HelloController.processType.contains("Round") && quantum == 0) {
+                    quantum = Integer.parseInt(additionalField.getText());
+                    additionalField.setDisable(true); // Disable the additional field after setting the quantum
+                    quantumSet = true;
+                }
+            }
+            processes.add(process);
+            double red = Math.random();
+            double green = Math.random();
+            double blue = Math.random();
+            Color color = Color.color(red, green, blue);
+            colors.put(process.getPid(), color);
+            table.getItems().add(process);
+        }
     }
 
 
@@ -161,6 +188,12 @@ public class ProcessController implements Initializable {
 
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        pane.getChildren().add(table);
+
+        failText.setFont(new Font(15));
+        failText.setX(30);
+        failText.setY(220);
+        failText.setFill(Color.RED);
+
+        pane.getChildren().addAll(table, failText);
     }
 }
