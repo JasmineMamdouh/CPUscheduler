@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="887.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.ProcessController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="887.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.ProcessController">
    <children>
       <TextField fx:id="pid" layoutX="28.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Process ID" />
       <TextField fx:id="arrivalTime" layoutX="140.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Arrival Time" />
@@ -24,16 +24,6 @@
             <Glow />
          </effect>
       </Label>
-      <Button fx:id="CalcATT" layoutX="36.0" layoutY="617.0" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Calculate Average Turnaround Time" textFill="#eeeeee">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="CalcAWT" layoutX="36.0" layoutY="558.0" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Calculate Average Waiting Time" textFill="#eeeeee">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
       <Label alignment="CENTER" layoutX="481.0" layoutY="26.0" prefHeight="41.0" prefWidth="312.0" style="-fx-background-color: #E8D5C4; -fx-border-radius: 10px;" text="Processes Table" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font size="24.0" />
@@ -47,9 +37,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="startScheduling2" layoutX="36.0" layoutY="440.0" mnemonicParsing="false"
-         onAction="#onLiveTable" style="-fx-background-color: #3A98B9;" text="Start Live Scheduling"
-         textFill="#eeeeee">
+      <Button fx:id="startScheduling2" layoutX="36.0" layoutY="440.0" mnemonicParsing="false" onAction="#onLiveTable" style="-fx-background-color: #3A98B9;" text="Start Live Scheduling" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font>
