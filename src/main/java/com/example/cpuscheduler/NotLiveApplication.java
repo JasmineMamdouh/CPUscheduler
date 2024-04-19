@@ -14,7 +14,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import kotlin.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -109,9 +108,6 @@ public class NotLiveApplication extends Application {
         table.setPrefWidth(350);
         table.setPrefHeight(350);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        for(GanttProcess ganttProcess: ganttProcesses) {
-            table.getItems().add(ganttProcess);
-        }
 
         int xAxis = 10;
         int yAxis = 470;
@@ -120,6 +116,7 @@ public class NotLiveApplication extends Application {
         int time = 0;
         //Gantt Chart
         for(GanttProcess ganttProcess: ganttProcesses) {
+            table.getItems().add(ganttProcess);
             Color color = processColorMap.get(ganttProcess.getPid());
 
             if (color == null) {
@@ -183,7 +180,7 @@ public class NotLiveApplication extends Application {
 
         layout.setStyle("-fx-background-color: #EEEEEE");
         layout.getChildren().add(table);
-        Scene scene = new Scene(layout,370,520);
+        Scene scene = new Scene(layout,370,560);
         stage.setScene(scene);
         stage.show();
     }
