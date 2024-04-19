@@ -143,7 +143,15 @@ public class NotLiveApplication extends Application {
             timeText.setX(endX - timeText.getLayoutBounds().getWidth() - 2); // Adjust padding as needed
             timeText.setY(rectangle.getY() + rectangle.getHeight() + 10);
 
-            Text processName = new Text("P" + ganttProcess.getPid()); // Adjust format if needed
+            int pid = ganttProcess.getPid();
+            Text processName = new Text();
+            if (pid == -1){
+                 processName.setText(" "); // Adjust format if needed
+            }
+            else
+                processName.setText("P" + ganttProcess.getPid()); // Adjust format if needed
+
+            //Text processName = new Text("P" + ganttProcess.getPid()); // Adjust format if needed
             processName.setFont(new Font(10)); // Adjust font size and style as desired
 
             processName.setX(rectangle.getX() + 10); // Adjust padding as needed
