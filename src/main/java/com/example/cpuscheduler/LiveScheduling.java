@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class LiveScheduling extends Application implements Runnable {
+    private VBox mainLayout = new VBox(); // Use VBox for vertical stacking;
     private TableView<Process> table = new TableView<>();
     private PriorityQueue<Process> processes;
     private ObservableList<Process> processesList = FXCollections.observableArrayList();
@@ -54,6 +55,10 @@ public class LiveScheduling extends Application implements Runnable {
     private int last_pid = -1;
     private int quantum;
     private ArrayList<Shape> holder = new ArrayList<>(2);
+    private TextField pidTextField = new TextField();
+    private TextField arrivalTimeTextField = new TextField();
+    private TextField burstTimeTextField = new TextField();
+    private TextField additionalFieldTextField = new TextField();
 
     LiveScheduling(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
@@ -165,10 +170,13 @@ public class LiveScheduling extends Application implements Runnable {
         calculateAndDisplayAverages();
     }
 
+    private void executScheduler() {
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        t = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
+    }
+
     @Override
     public void start(Stage stage) {
-        VBox mainLayout = new VBox(); // Use VBox for vertical stacking
-
         Label label = new Label("Scheduling Table");
         label.setAlignment(javafx.geometry.Pos.CENTER);
         label.setStyle("-fx-background-color: #E8D5C4; -fx-border-radius: 10px;");
@@ -228,8 +236,7 @@ public class LiveScheduling extends Application implements Runnable {
         mainLayout.getChildren().add(layout);
         layout.getChildren().add(timeText);
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        t = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
+        executScheduler();
 
         switch (HelloController.processType) {
             case "FCFS" -> scheduler = new FirstComeFirstServe();
@@ -268,30 +275,38 @@ public class LiveScheduling extends Application implements Runnable {
         mainLayout.getChildren().add(label3);
 
         Pane addProcessLayout = new Pane();
-
-        TextField pidTextField = new TextField();
+        
+        // Process id text field
         pidTextField.setLayoutX(10.0);
         pidTextField.setLayoutY(10.0);
         pidTextField.setPrefHeight(25.0);
         pidTextField.setPrefWidth(85.0);
         pidTextField.setPromptText("PID");
 
-        TextField arrivalTimeTextField = new TextField();
+        // Arrival time text field
         arrivalTimeTextField.setLayoutX(120.0);
         arrivalTimeTextField.setLayoutY(10.0);
         arrivalTimeTextField.setPrefHeight(25.0);
         arrivalTimeTextField.setPrefWidth(85.0);
         arrivalTimeTextField.setPromptText("Arrival Time");
 
-        TextField burstTimeTextField = new TextField();
+        // Arrival time text field
         burstTimeTextField.setLayoutX(230.0);
         burstTimeTextField.setLayoutY(10.0);
         burstTimeTextField.setPrefHeight(25.0);
         burstTimeTextField.setPrefWidth(85.0);
         burstTimeTextField.setPromptText("Burst Time");
 
-        Button addProcessButton = new Button();
+        if(scheduler instanceof Priority_NonPreemptive || scheduler instanceof PriorityPreemptive) {
+            additionalFieldTextField.setLayoutX(230.0);
+            additionalFieldTextField.setLayoutY(10.0);
+            additionalFieldTextField.setPrefHeight(25.0);
+            additionalFieldTextField.setPrefWidth(85.0);
+            additionalFieldTextField.setPromptText("Priority");
+        }
+        
 
+        Button addProcessButton = new Button();
         // Set properties
         addProcessButton.setLayoutX(350.0);
         addProcessButton.setLayoutY(10.0);
@@ -303,15 +318,108 @@ public class LiveScheduling extends Application implements Runnable {
         addProcessButton.setTextFill(javafx.scene.paint.Color.WHITE);
         addProcessButton.setOnAction(event -> onAddButtonClick());
 
-        addProcessLayout.getChildren().addAll(pidTextField,arrivalTimeTextField,burstTimeTextField, addProcessButton);
+        Button pauseButton = new Button();
+        // Set properties
+        pauseButton.setLayoutX(500.0);
+        pauseButton.setLayoutY(10.0);
+        pauseButton.setMnemonicParsing(false);
+        pauseButton.setPrefHeight(36.0);
+        pauseButton.setPrefWidth(135.0);
+        pauseButton.setStyle("-fx-background-color: #3A98B9;");
+        pauseButton.setText("Pause scheduler");
+        pauseButton.setTextFill(javafx.scene.paint.Color.WHITE);
+        pauseButton.setOnAction(event -> t.cancel(false));
+
+        Button startButton = new Button();
+        // Set properties
+        startButton.setLayoutX(650.0);
+        startButton.setLayoutY(10.0);
+        startButton.setMnemonicParsing(false);
+        startButton.setPrefHeight(36.0);
+        startButton.setPrefWidth(135.0);
+        startButton.setStyle("-fx-background-color: #3A98B9;");
+        startButton.setText("Resume scheduler");
+        startButton.setTextFill(javafx.scene.paint.Color.WHITE);
+        startButton.setOnAction(event -> executScheduler());
+
+        addProcessLayout.getChildren().addAll(pidTextField, arrivalTimeTextField, burstTimeTextField, addProcessButton, pauseButton, startButton);
         mainLayout.getChildren().add(addProcessLayout);
         mainLayout.setPadding(new Insets(10));
         mainLayout.setSpacing(10);
 
         stage.show();
     }
+
     private void onAddButtonClick(){
-        
+        Text failText = new Text("");
+        boolean safe = true;
+        Process process;
+        failText.setText("");
+        if(
+            pidTextField.getText().isEmpty()
+            || burstTimeTextField.getText().isEmpty()
+            || arrivalTimeTextField.getText().isEmpty()
+        ) {
+            safe = false;
+            failText.setText("Please Fill All The Fields");
+        }
+        if (
+            HelloController.processType.contains("Priority")
+            && additionalFieldTextField.getText().isEmpty()
+        ) {
+            safe = false;
+            failText.setText("Please Fill All The Fields");
+        }
+
+        if(safe){
+            for (Process proc : processes) {
+                if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
+                    safe = false;
+                    failText.setText("This PID Already Exists.");
+                }
+            }
+            for (Process proc : processesList) {
+                if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
+                    safe = false;
+                    failText.setText("This PID Already Exists.");
+                }
+            }
+        }
+        if(safe) {
+            if (HelloController.processType.contains("Priority")) {
+                process = new Process(
+                        Integer.parseInt(pidTextField.getText()),
+                        Integer.parseInt(burstTimeTextField.getText()),
+                        Integer.parseInt(additionalFieldTextField.getText()),
+                        Integer.parseInt(arrivalTimeTextField.getText())
+                );
+                additionalFieldTextField.clear();
+            } else {
+                process = new Process(
+                        Integer.parseInt(pidTextField.getText()),
+                        Integer.parseInt(burstTimeTextField.getText()),
+                        Integer.parseInt(arrivalTimeTextField.getText())
+                );
+            }
+
+            double red = Math.random();
+            double green = Math.random();
+            double blue = Math.random();
+            Color color = Color.color(red, green, blue);
+            processColorMap.put(process.getPid(), color);
+            processes.add(process);
+
+            // Clearing the fields
+            pidTextField.clear();
+            arrivalTimeTextField.clear();
+            burstTimeTextField.clear();
+        } else {
+            failText.setFont(new Font(15));
+            failText.setX(30);
+            failText.setY(50);
+            failText.setFill(Color.RED);
+            mainLayout.getChildren().add(failText);
+        }
     }
 
     public static void main(String[] args) {
