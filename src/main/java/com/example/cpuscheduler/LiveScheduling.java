@@ -301,7 +301,7 @@ public class LiveScheduling extends Application implements Runnable {
         addProcessButton.setStyle("-fx-background-color: #3A98B9;");
         addProcessButton.setText("Add Process");
         addProcessButton.setTextFill(javafx.scene.paint.Color.WHITE);
-
+        addProcessButton.setOnAction(event -> onAddButtonClick());
 
         addProcessLayout.getChildren().addAll(pidTextField,arrivalTimeTextField,burstTimeTextField, addProcessButton);
         mainLayout.getChildren().add(addProcessLayout);
@@ -311,7 +311,7 @@ public class LiveScheduling extends Application implements Runnable {
         stage.show();
     }
     private void onAddButtonClick(){
-
+        
     }
 
     public static void main(String[] args) {
