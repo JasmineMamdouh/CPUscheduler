@@ -82,6 +82,14 @@ public class ProcessController implements Initializable {
         GanttStage.show();
     }
 
+    @FXML
+    protected void onLiveTable() throws IOException {
+        LiveScheduling liveTable= new LiveScheduling(processes);
+        Stage liveStage =new Stage();
+        liveTable.start(liveStage);
+        liveStage.show();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         TableColumn<Process, Integer> pidColumn = new TableColumn<>("PID");
