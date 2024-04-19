@@ -133,10 +133,10 @@ public class ProcessController implements Initializable {
     }
 
     @FXML
-    protected void onLiveTable() throws IOException {
-        PriorityQueue<Process> p4 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
-        p4=onClick();
-        LiveScheduling liveTable= new LiveScheduling(processes,colors);
+   protected void onLiveTable() throws IOException {
+        PriorityQueue<Process> p3 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        p3=onClick();
+        LiveScheduling liveTable= new LiveScheduling(p3,colors);
         Stage liveStage =new Stage();
         liveTable.start(liveStage);
         liveStage.show();
