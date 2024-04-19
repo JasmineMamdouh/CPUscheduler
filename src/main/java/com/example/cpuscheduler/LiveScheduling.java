@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -41,6 +42,8 @@ public class LiveScheduling extends Application implements Runnable {
     private ArrayList<GanttProcess> ganttChart;
     private Pane layout;
     private Text timeText;
+    private Text avgWaitTime;
+    private Text avgTurnaroundTime;
     private int lastx = 20;
     private int y = 50;
     private int last_pid = -1;
@@ -51,6 +54,26 @@ public class LiveScheduling extends Application implements Runnable {
         this.processColorMap = processColorMap;
         this.quantum = quantum;
     }
+
+    private void calculateAndDisplayAverages() {
+        float avgWait = scheduler.calcAvgWaitingTime();
+        float avgTurnaround = scheduler.calcAvgTurnaroundTime();
+
+        // Check if average waiting time is not NaN before updating the text
+        if (!Float.isNaN(avgWait)) {
+            avgWaitTime.setText("Average Waiting Time: " + String.format("%.2f", avgWait) + "s");
+        } else {
+            avgWaitTime.setText("Average Waiting Time:  ");
+        }
+
+        // Check if average turnaround time is not NaN before updating the text
+        if (!Float.isNaN(avgTurnaround)) {
+            avgTurnaroundTime.setText("Average Turnaround Time: " + String.format("%.2f", avgTurnaround) + "s");
+        } else {
+            avgTurnaroundTime.setText("Average Turnaround Time:  ");
+        }
+    }
+
 
     @Override
     public void run() {
@@ -109,6 +132,9 @@ public class LiveScheduling extends Application implements Runnable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        // Calculate average turnaround time and average waiting time
+        calculateAndDisplayAverages();
     }
 
     @Override
@@ -159,7 +185,7 @@ public class LiveScheduling extends Application implements Runnable {
         layout.setStyle("-fx-background-color: #EEEEEE");
         timeText = new Text("Time = " + time + "second");
         timeText.setX(lastx);
-        timeText.setY(y);
+        timeText.setY(y - 20);
 
         mainLayout.getChildren().add(layout);
         layout.getChildren().add(timeText);
@@ -176,6 +202,18 @@ public class LiveScheduling extends Application implements Runnable {
             case "Priority Preemptive" -> scheduler = new PriorityPreemptive();
             default -> scheduler = new FirstComeFirstServe();
         }
+        //adding labels for the average waiting time and average turn around time
+        avgWaitTime = new Text();
+        avgWaitTime.setX(10.0);
+        avgWaitTime.setY(120.0);
+        avgWaitTime.setFont(new Font(14.0));
+        layout.getChildren().add(avgWaitTime);
+
+        avgTurnaroundTime = new Text();
+        avgTurnaroundTime.setX(10.0);
+        avgTurnaroundTime.setY(150.0);
+        avgTurnaroundTime.setFont(new Font(14.0));
+        layout.getChildren().add(avgTurnaroundTime);
 
         stage.show();
     }
