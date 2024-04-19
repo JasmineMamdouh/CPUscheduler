@@ -20,10 +20,12 @@ import java.util.*;
 
 public class NotLiveApplication extends Application {
     private PriorityQueue<Process> processes;
+    private Map<Integer, Color> processColorMap;
     private int quantum;
 
-    NotLiveApplication(PriorityQueue<Process> processes, int quantum){
+    NotLiveApplication(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum){
         this.processes = processes;
+        this.processColorMap = processColorMap;
         this.quantum = quantum;
     }
 
@@ -111,23 +113,21 @@ public class NotLiveApplication extends Application {
 
         int xAxis = 10;
         int yAxis = 470;
-        Map<Integer, Color> processColorMap = new HashMap<>();
-
         int time = 0;
         //Gantt Chart
-        for(GanttProcess ganttProcess: ganttProcesses) {
+        for(int i = 0; i < ganttProcesses.size() - 1; i++) {
+            GanttProcess ganttProcess = ganttProcesses.get(i);
             table.getItems().add(ganttProcess);
             Color color = processColorMap.get(ganttProcess.getPid());
 
-            if (color == null) {
-                // Generate random color if new PID
-                Random random = new Random();
-                double red = Math.random();
-                double green = Math.random();
-                double blue = Math.random();
-                color = Color.color(red, green, blue);
-                processColorMap.put(ganttProcess.getPid(), color);
-            }
+            // if (color == null) {
+            //     // Generate random color if new PID
+            //     double red = Math.random();
+            //     double green = Math.random();
+            //     double blue = Math.random();
+            //     color = Color.color(red, green, blue);
+            //     processColorMap.put(ganttProcess.getPid(), color);
+            // }
 
             Rectangle rectangle = new Rectangle(ganttProcess.getRunningTime() * 30, 15, color);
             rectangle.setX(xAxis);

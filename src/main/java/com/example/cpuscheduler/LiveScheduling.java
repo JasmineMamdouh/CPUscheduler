@@ -37,7 +37,7 @@ public class LiveScheduling extends Application implements Runnable {
     private ScheduledFuture<?> t;
     private Schedulers scheduler;
     private int time = 0;
-    private HashMap<Integer, Color> colors;
+    private Map<Integer, Color> processColorMap;
     private ArrayList<GanttProcess> ganttChart;
     private Pane layout;
     private Text timeText;
@@ -46,9 +46,9 @@ public class LiveScheduling extends Application implements Runnable {
     private int last_pid = -1;
     private int quantum;
 
-    LiveScheduling(PriorityQueue<Process> processes, HashMap<Integer, Color> colors, int quantum) {
+    LiveScheduling(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
-        this.colors = colors;
+        this.processColorMap = processColorMap;
         this.quantum = quantum;
     }
 
@@ -85,7 +85,7 @@ public class LiveScheduling extends Application implements Runnable {
 
                 ganttChart = scheduler.getGanttChart();
                 int current_pid = ganttChart.get(ganttChart.size() - 1).getPid();
-                Color color = colors.get(current_pid);
+                Color color = processColorMap.get(current_pid);
 
                 if (current_pid != last_pid) {
                     last_pid = current_pid;

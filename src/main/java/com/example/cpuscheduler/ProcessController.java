@@ -17,6 +17,7 @@ import javafx.util.converter.IntegerStringConverter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
@@ -36,15 +37,16 @@ public class ProcessController implements Initializable {
     private Button startScheduling;
 
 
-    int quantum = 0;
-    HashMap<Integer, Color> colors = new HashMap<>();
 
     // private final PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
     ObservableList<Process> processes = FXCollections.observableArrayList();
     private final TableView<Process> table = new TableView<>();
+    private Map<Integer, Color> processColorMap = new HashMap<>();
     private final TextField additionalField = new TextField();
     private final Text failText = new Text("");
     private boolean quantumSet = false;
+    private int quantum = 0;
+
 
     @FXML
     protected void onAddButtonClick() {
@@ -101,7 +103,7 @@ public class ProcessController implements Initializable {
             double green = Math.random();
             double blue = Math.random();
             Color color = Color.color(red, green, blue);
-            colors.put(process.getPid(), color);
+            processColorMap.put(process.getPid(), color);
             table.getItems().add(process);
             processes = table.getItems();
 
@@ -130,7 +132,7 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
-        NotLiveApplication notLiveApplication = new NotLiveApplication(this.getTableProcesses(), quantum);
+        NotLiveApplication notLiveApplication = new NotLiveApplication(this.getTableProcesses(), processColorMap, quantum);
         Stage notLiveStage = new Stage();
         notLiveApplication.start(notLiveStage);
         notLiveStage.show();
@@ -138,7 +140,7 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onLiveTable() throws IOException {
-        LiveScheduling liveTable= new LiveScheduling(this.getTableProcesses(), colors, quantum);
+        LiveScheduling liveTable= new LiveScheduling(this.getTableProcesses(), processColorMap, quantum);
         Stage liveStage =new Stage();
         liveTable.start(liveStage);
         liveStage.show();
@@ -208,6 +210,7 @@ public class ProcessController implements Initializable {
         failText.setY(220);
         failText.setFill(Color.RED);
 
+        processColorMap.put(-1, Color.rgb(197, 211, 232));
         pane.getChildren().addAll(table, failText);
     }
 }
