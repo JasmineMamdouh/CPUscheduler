@@ -175,6 +175,7 @@ public class ProcessController implements Initializable {
         table.setLayoutX(460);
         table.setLayoutY(100);
         table.setPrefWidth(350);
+        table.setPrefHeight(385);
         table.setEditable(true);
 
         if(HelloController.processType.contains("Priority")){
@@ -211,7 +212,7 @@ public class ProcessController implements Initializable {
 
         failText.setFont(new Font(15));
         failText.setX(30);
-        failText.setY(220);
+        failText.setY(280);
         failText.setFill(Color.RED);
 
         processColorMap.put(-1, Color.rgb(197, 211, 232));

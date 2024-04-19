@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="887.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.ProcessController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="857.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.ProcessController">
    <children>
       <TextField fx:id="pid" layoutX="28.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Process ID" />
       <TextField fx:id="arrivalTime" layoutX="140.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Arrival Time" />
@@ -32,12 +32,12 @@
             <Glow />
          </effect>
       </Label>
-      <Button fx:id="startScheduling2" layoutX="36.0" layoutY="440.0" mnemonicParsing="false" onAction="#onLiveTable" style="-fx-background-color: #3A98B9;" text="Start Live Scheduling" textFill="#eeeeee">
+      <Button fx:id="startScheduling2" layoutX="36.0" layoutY="387.0" mnemonicParsing="false" onAction="#onLiveTable" style="-fx-background-color: #3A98B9;" text="Start Live Scheduling" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="startScheduling1" layoutX="36.0" layoutY="498.0" mnemonicParsing="false" onAction="#onNotLiveButtonClick" style="-fx-background-color: #3A98B9;" text="Run Without Live Scheduling" textFill="#eeeeee">
+      <Button fx:id="startScheduling1" layoutX="36.0" layoutY="445.0" mnemonicParsing="false" onAction="#onNotLiveButtonClick" style="-fx-background-color: #3A98B9;" text="Run Without Live Scheduling" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font>
