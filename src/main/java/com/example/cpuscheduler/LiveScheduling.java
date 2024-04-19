@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -44,6 +43,8 @@ public class LiveScheduling extends Application implements Runnable {
     private Text timeText;
     private Text avgWaitTime;
     private Text avgTurnaroundTime;
+    private Text text;
+    private boolean sameProcess = false;
     private int lastx = 20;
     private int y = 50;
     private int last_pid = -1;
@@ -90,16 +91,16 @@ public class LiveScheduling extends Application implements Runnable {
 
                 boolean running = scheduler.fetchNextTask(time);
 
-                timeText.setText("Time = " + time + "second");
+                int width = 30;
+                int length = 20;
 
-                int length = 30;
-                int width = 20;
-                Text text;
+                timeText.setText("Time = " + time + " s");
 
                 if (!running && processes.isEmpty()) {
-                    text = new Text(time + "");
+                    layout.getChildren().remove(text);
+                    text = new Text(time + "s");
                     text.setX(lastx);
-                    text.setY(y + width + 20);
+                    text.setY(y + length + 20);
                     text.setFill(Color.DARKBLUE);
                     layout.getChildren().add(text);
                     t.cancel(false);
@@ -110,23 +111,38 @@ public class LiveScheduling extends Application implements Runnable {
                 int current_pid = ganttChart.get(ganttChart.size() - 1).getPid();
                 Color color = processColorMap.get(current_pid);
 
-                if (current_pid != last_pid) {
-                    last_pid = current_pid;
-                    text = new Text(time + "");
-                    text.setX(lastx);
-                    text.setY(y + width + 20);
-                    text.setFill(Color.DARKBLUE);
-                    layout.getChildren().add(text);
+                if (sameProcess) {
+                    layout.getChildren().remove(text);
+                    sameProcess = false;
                 }
 
-                Rectangle rectangle = new Rectangle(length, width);
+                if (current_pid == last_pid) {
+                    sameProcess = true;
+                }
+
+                text = new Text(time + "s");
+                text.setX(lastx);
+                text.setY(y + length + 20);
+                text.setFill(Color.DARKBLUE);
+                layout.getChildren().add(text);
+
+                Rectangle rectangle = new Rectangle(width, length);
                 rectangle.setX(lastx);
                 rectangle.setY(y);
-                lastx += length;
+                lastx += width;
                 rectangle.setFill(color);
-
                 layout.getChildren().add(rectangle);
 
+                if (current_pid != last_pid) {
+                    Text processName = new Text("P" + current_pid);
+                    processName.setFont(new Font(10));
+
+                    processName.setX(rectangle.getX() + 10);
+                    processName.setY(rectangle.getY() + 13);
+                    layout.getChildren().add(processName);
+                }
+
+                last_pid = current_pid;
                 time++;
             });
         } catch (Exception e) {
@@ -183,9 +199,10 @@ public class LiveScheduling extends Application implements Runnable {
 
         layout = new Pane();
         layout.setStyle("-fx-background-color: #EEEEEE");
-        timeText = new Text("Time = " + time + "second");
+        timeText = new Text("Time = " + time + " s");
         timeText.setX(lastx);
-        timeText.setY(y - 20);
+        timeText.setY(y);
+        y += 10;
 
         mainLayout.getChildren().add(layout);
         layout.getChildren().add(timeText);
@@ -202,6 +219,7 @@ public class LiveScheduling extends Application implements Runnable {
             case "Priority Preemptive" -> scheduler = new PriorityPreemptive();
             default -> scheduler = new FirstComeFirstServe();
         }
+
         //adding labels for the average waiting time and average turn around time
         avgWaitTime = new Text();
         avgWaitTime.setX(10.0);
