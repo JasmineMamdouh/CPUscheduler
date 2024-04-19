@@ -20,9 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.*;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,11 +52,12 @@ public class LiveScheduling extends Application implements Runnable {
     private int y = 50;
     private int last_pid = -1;
     private int quantum;
-    private ArrayList<Shape> holder = new ArrayList<>(2);
-    private TextField pidTextField = new TextField();
-    private TextField arrivalTimeTextField = new TextField();
-    private TextField burstTimeTextField = new TextField();
-    private TextField additionalFieldTextField = new TextField();
+    private final ArrayList<Shape> holder = new ArrayList<>(2);
+    private final TextField pidTextField = new TextField();
+    private final TextField arrivalTimeTextField = new TextField();
+    private final TextField burstTimeTextField = new TextField();
+    private final TextField additionalFieldTextField = new TextField();
+    private final Text failText = new Text("");
 
     LiveScheduling(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
@@ -222,7 +221,7 @@ public class LiveScheduling extends Application implements Runnable {
         mainLayout.setStyle("-fx-background-color: #EEEEEE");
         mainLayout.getChildren().addAll(label, table,label2);
 
-        Scene scene = new Scene(mainLayout, 820, 780);
+        Scene scene = new Scene(mainLayout);
         stage.setScene(scene);
         stage.setTitle("Scheduling Table");
 
@@ -343,7 +342,10 @@ public class LiveScheduling extends Application implements Runnable {
         startButton.setOnAction(event -> executScheduler());
 
         addProcessLayout.getChildren().addAll(pidTextField, arrivalTimeTextField, burstTimeTextField, addProcessButton, pauseButton, startButton);
-        mainLayout.getChildren().add(addProcessLayout);
+
+        failText.setFont(new Font(15));
+        failText.setFill(Color.RED);
+        mainLayout.getChildren().addAll(addProcessLayout, failText);
         mainLayout.setPadding(new Insets(10));
         mainLayout.setSpacing(10);
 
@@ -351,7 +353,6 @@ public class LiveScheduling extends Application implements Runnable {
     }
 
     private void onAddButtonClick(){
-        Text failText = new Text("");
         boolean safe = true;
         Process process;
         failText.setText("");
@@ -413,12 +414,6 @@ public class LiveScheduling extends Application implements Runnable {
             pidTextField.clear();
             arrivalTimeTextField.clear();
             burstTimeTextField.clear();
-        } else {
-            failText.setFont(new Font(15));
-            failText.setX(30);
-            failText.setY(50);
-            failText.setFill(Color.RED);
-            mainLayout.getChildren().add(failText);
         }
     }
 
