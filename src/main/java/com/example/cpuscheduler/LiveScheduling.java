@@ -105,8 +105,8 @@ public class LiveScheduling extends Application implements Runnable {
                     layout.getChildren().remove(text);
                     text = new Text(time + "s");
                     text.setX(lastx);
-                    text.setY(y + length + 20);
-                    text.setFill(Color.DARKBLUE);
+                    text.setY(y + length + 10);
+                    text.setFont(new Font(10));
                     layout.getChildren().addAll(holder);
                     holder.clear();
                     layout.getChildren().add(text);
@@ -134,8 +134,8 @@ public class LiveScheduling extends Application implements Runnable {
 
                 text = new Text(time + "s");
                 text.setX(lastx);
-                text.setY(y + length + 20);
-                text.setFill(Color.DARKBLUE);
+                text.setY(y + length + 10);
+                text.setFont(new Font(10));
                 layout.getChildren().add(text);
 
                 Rectangle rectangle = new Rectangle(width, length);

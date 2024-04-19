@@ -23,6 +23,9 @@ public class NotLiveApplication extends Application {
     private Map<Integer, Color> processColorMap;
     private int quantum;
 
+    private Text avgWaitTime;
+    private Text avgTurnaroundTime;
+
     NotLiveApplication(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum){
         this.processes = processes;
         this.processColorMap = processColorMap;
@@ -159,31 +162,21 @@ public class NotLiveApplication extends Application {
             layout.getChildren().addAll(rectangle, processName, timeText);
         }
 
-        //adding labels for the average waiting time and average turn around time
-        Label avgWaitingTimeLabel = new Label("Average Waiting Time:");
-        avgWaitingTimeLabel.setLayoutX(10.0);
-        avgWaitingTimeLabel.setLayoutY(510.0);
-        avgWaitingTimeLabel.setFont(new Font(14.0));
-        layout.getChildren().add(avgWaitingTimeLabel);
+        //adding texts for the average waiting time and average turn around time
+        avgWaitTime = new Text();
+        avgWaitTime.setX(10.0);
+        avgWaitTime.setY(520.0);
+        avgWaitTime.setFont(new Font(14.0));
+        layout.getChildren().add(avgWaitTime);
 
-        Label avgTurnaroundTimeLabel = new Label("Average Turnaround Time:");
-        avgTurnaroundTimeLabel.setLayoutX(10.0);
-        avgTurnaroundTimeLabel.setLayoutY(530.0);
-        avgTurnaroundTimeLabel.setFont(new Font(14.0));
-        layout.getChildren().add(avgTurnaroundTimeLabel);
+        avgTurnaroundTime = new Text();
+        avgTurnaroundTime.setX(10.0);
+        avgTurnaroundTime.setY(540.0);
+        avgTurnaroundTime.setFont(new Font(14.0));
+        layout.getChildren().add(avgTurnaroundTime);
 
-        // Set text of the labels to display the averages
-        Label avgWaitingTimeValueLabel = new Label(String.format("%.2f", scheduler.calcAvgWaitingTime()) + "s");
-        avgWaitingTimeValueLabel.setLayoutX(200.0);
-        avgWaitingTimeValueLabel.setLayoutY(510.0);
-        avgWaitingTimeValueLabel.setFont(new Font(14.0));
-        layout.getChildren().add(avgWaitingTimeValueLabel);
-
-        Label avgTurnaroundTimeValueLabel = new Label(String.format("%.2f", scheduler.calcAvgTurnaroundTime()) + "s");
-        avgTurnaroundTimeValueLabel.setLayoutX(200.0);
-        avgTurnaroundTimeValueLabel.setLayoutY(530.0);
-        avgTurnaroundTimeValueLabel.setFont(new Font(14.0));
-        layout.getChildren().add(avgTurnaroundTimeValueLabel);
+        avgWaitTime.setText("Average Waiting Time:  " + String.format("%.2f", scheduler.calcAvgWaitingTime()) + "s");
+        avgTurnaroundTime.setText("Average Turnaround Time:  " + String.format("%.2f", scheduler.calcAvgTurnaroundTime()) + "s");
 
 
         layout.setStyle("-fx-background-color: #EEEEEE");
