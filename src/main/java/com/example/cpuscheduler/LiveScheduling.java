@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -49,6 +50,7 @@ public class LiveScheduling extends Application implements Runnable {
     private int y = 50;
     private int last_pid = -1;
     private int quantum;
+    private ArrayList<Shape> holder = new ArrayList<>(2);
 
     LiveScheduling(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
@@ -102,6 +104,8 @@ public class LiveScheduling extends Application implements Runnable {
                     text.setX(lastx);
                     text.setY(y + length + 20);
                     text.setFill(Color.DARKBLUE);
+                    layout.getChildren().addAll(holder);
+                    holder.clear();
                     layout.getChildren().add(text);
                     t.cancel(false);
                     return;
@@ -118,6 +122,11 @@ public class LiveScheduling extends Application implements Runnable {
 
                 if (current_pid == last_pid) {
                     sameProcess = true;
+                }  
+
+                if (!holder.isEmpty()) {
+                    layout.getChildren().addAll(holder);
+                    holder.clear();
                 }
 
                 text = new Text(time + "s");
@@ -131,7 +140,7 @@ public class LiveScheduling extends Application implements Runnable {
                 rectangle.setY(y);
                 lastx += width;
                 rectangle.setFill(color);
-                layout.getChildren().add(rectangle);
+                holder.add(rectangle);
 
                 if (current_pid != last_pid) {
                     Text processName = new Text("P" + current_pid);
@@ -139,7 +148,7 @@ public class LiveScheduling extends Application implements Runnable {
 
                     processName.setX(rectangle.getX() + 10);
                     processName.setY(rectangle.getY() + 13);
-                    layout.getChildren().add(processName);
+                    holder.add(processName);
                 }
 
                 last_pid = current_pid;
