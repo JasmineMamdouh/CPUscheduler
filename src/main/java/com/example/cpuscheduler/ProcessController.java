@@ -1,14 +1,18 @@
 package com.example.cpuscheduler;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,22 +39,8 @@ public class ProcessController implements Initializable {
     int quantum = 0;
     HashMap<Integer, Color> colors = new HashMap<>();
 
-    public PriorityQueue<Process> onClick()
-    {
-        PriorityQueue<Process> p = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
-        for(Process P: processes) {
-            if (HelloController.processType.contains("Priority"))
-            {
-                p.add(new Process(P.getPid(), P.getBurstTime(), P.getArrivalTime(), P.getPriority()));
-            }
-            else
-            {
-                p.add(new Process(P.getPid(), P.getBurstTime(), P.getArrivalTime()));
-            }
-        }
-        return p;
-    }
-    private final PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+    // private final PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+    ObservableList<Process> processes = FXCollections.observableArrayList();
     private final TableView<Process> table = new TableView<>();
     private final TextField additionalField = new TextField();
     private final Text failText = new Text("");
@@ -106,13 +96,14 @@ public class ProcessController implements Initializable {
                     quantumSet = true;
                 }
             }
-            processes.add(process);
+            // processes.add(process);
             double red = Math.random();
             double green = Math.random();
             double blue = Math.random();
             Color color = Color.color(red, green, blue);
             colors.put(process.getPid(), color);
             table.getItems().add(process);
+            processes = table.getItems();
 
             // Clearing the fields
             pid.clear();
@@ -121,22 +112,33 @@ public class ProcessController implements Initializable {
         }
     }
 
+    private PriorityQueue<Process> getTableProcesses() {
+        PriorityQueue<Process> processesQueue = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        processes =  table.getItems();
+        for (Process process : processes) {
+            processesQueue.add((Process)process.clone());
+        }
+        return processesQueue;
+    }
+
+    @FXML
+    protected void onDeleteButtonClick() throws IOException {
+        int processIndex = table.getSelectionModel().getSelectedIndex();
+        table.getItems().remove(processIndex);
+        processes = table.getItems();
+    }
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
-        PriorityQueue<Process> p2 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
-        p2=onClick();
-        NotLiveApplication notLiveApplication = new NotLiveApplication(p2, quantum);
+        NotLiveApplication notLiveApplication = new NotLiveApplication(this.getTableProcesses(), quantum);
         Stage notLiveStage = new Stage();
         notLiveApplication.start(notLiveStage);
         notLiveStage.show();
     }
 
     @FXML
-   protected void onLiveTable() throws IOException {
-        PriorityQueue<Process> p3 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
-        p3=onClick();
-        LiveScheduling liveTable= new LiveScheduling(p3,colors, quantum);
+    protected void onLiveTable() throws IOException {
+        LiveScheduling liveTable= new LiveScheduling(this.getTableProcesses(), colors, quantum);
         Stage liveStage =new Stage();
         liveTable.start(liveStage);
         liveStage.show();
@@ -150,15 +152,26 @@ public class ProcessController implements Initializable {
 
         TableColumn<Process, Integer> arrivalTimeColumn = new TableColumn<>("Arrival Time");
         arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("arrivalTime"));
+        arrivalTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        arrivalTimeColumn.setOnEditCommit(e -> {
+            Process p = e.getRowValue();
+            p.setArrivalTime(e.getNewValue());
+        });
 
         TableColumn<Process, Integer> burstTimeColumn = new TableColumn<>("Burst Time");
         burstTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("burstTime"));
+        burstTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        burstTimeColumn.setOnEditCommit(e -> {
+            Process p = e.getRowValue();
+            p.setBurstTime(e.getNewValue());
+        });
 
         // Add columns to the table
         table.getColumns().addAll(pidColumn, arrivalTimeColumn, burstTimeColumn);
         table.setLayoutX(460);
         table.setLayoutY(100);
         table.setPrefWidth(350);
+        table.setEditable(true);
 
         if(HelloController.processType.contains("Priority")){
             additionalField.setPromptText("Priority");
@@ -170,6 +183,11 @@ public class ProcessController implements Initializable {
 
             TableColumn<Process, Integer> priorityColumn = new TableColumn<>("Priority");
             priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
+            priorityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            priorityColumn.setOnEditCommit(e -> {
+                Process p = e.getRowValue();
+                p.setPriority(e.getNewValue());
+            });
 
             table.getColumns().add(priorityColumn);
         }

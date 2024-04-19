@@ -12,7 +12,7 @@
       <TextField fx:id="pid" layoutX="28.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Process ID" />
       <TextField fx:id="arrivalTime" layoutX="140.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Arrival Time" />
       <TextField fx:id="burstTime" layoutX="254.0" layoutY="93.0" prefHeight="25.0" prefWidth="85.0" promptText="Burst Time" />
-      <Button fx:id="addProcess" layoutX="126.0" layoutY="140.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
+      <Button fx:id="addProcess" layoutX="28.0" layoutY="144.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="36.0" prefWidth="135.0" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font></Button>
@@ -38,6 +38,11 @@
          </font>
       </Button>
       <Button fx:id="startScheduling1" layoutX="36.0" layoutY="498.0" mnemonicParsing="false" onAction="#onNotLiveButtonClick" style="-fx-background-color: #3A98B9;" text="Run Without Live Scheduling" textFill="#eeeeee">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteProcess" layoutX="204.0" layoutY="144.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="36.0" prefWidth="135.0" style="-fx-background-color: #3A98B9;" text="Delete Process" textFill="#eeeeee">
          <font>
             <Font size="16.0" />
          </font>

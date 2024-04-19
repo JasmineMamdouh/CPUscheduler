@@ -1,6 +1,6 @@
 package com.example.cpuscheduler;
 
-public class Process {
+public class Process implements Cloneable {
     int pid;
     int burstTime;
     int priority;
@@ -108,5 +108,11 @@ public class Process {
         } else {
             remainingTime -= quantum;
         }
+    }
+
+    @Override
+    protected Object clone() {
+        Process ProcessClone = new Process(this.pid, this.burstTime, this.priority, this.arrivalTime);
+        return ProcessClone;
     }
 }
