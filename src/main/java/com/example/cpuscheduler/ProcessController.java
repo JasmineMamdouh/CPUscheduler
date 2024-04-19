@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
+
 public class ProcessController implements Initializable {
     @FXML
     private TextField pid;
@@ -34,8 +35,27 @@ public class ProcessController implements Initializable {
 
 
     private PriorityQueue<Process> processes = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+
     private TableView<Process> table = new TableView<>();
+
     TextField additionalField = new TextField();
+
+    public PriorityQueue<Process> onClick()
+    {
+        PriorityQueue<Process> p = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        for(Process P: processes) {
+            if (HelloController.processType.contains("Priority"))
+            {
+                p.add(new Process(P.getPid(), P.getBurstTime(), P.getArrivalTime(), P.getPriority()));
+            }
+            else
+            {
+                p.add(new Process(P.getPid(), P.getBurstTime(), P.getArrivalTime()));
+            }
+        }
+        return p;
+    }
+
     @FXML
 
     protected void onAddButtonClick() {
@@ -71,7 +91,9 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
-        NotLiveApplication notLiveApplication = new NotLiveApplication(processes, quantum);
+        PriorityQueue<Process> p2 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        p2=onClick();
+        NotLiveApplication notLiveApplication = new NotLiveApplication(p2, quantum);
         Stage notLiveStage = new Stage();
         notLiveApplication.start(notLiveStage);
         notLiveStage.show();
@@ -79,7 +101,9 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onRunLive() throws IOException {
-        GanttApplication ganttChart = new GanttApplication(processes, colors);
+        PriorityQueue<Process> p3 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        p3=onClick();
+        GanttApplication ganttChart = new GanttApplication(p3, colors);
         Stage  GanttStage = new Stage();
         ganttChart.start( GanttStage);
         GanttStage.show();
@@ -87,7 +111,9 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onLiveTable() throws IOException {
-        LiveScheduling liveTable= new LiveScheduling(processes);
+        PriorityQueue<Process> p4 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+        p4=onClick();
+        LiveScheduling liveTable= new LiveScheduling(p4);
         Stage liveStage =new Stage();
         liveTable.start(liveStage);
         liveStage.show();
@@ -95,6 +121,7 @@ public class ProcessController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         TableColumn<Process, Integer> pidColumn = new TableColumn<>("PID");
         pidColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("pid"));
 
