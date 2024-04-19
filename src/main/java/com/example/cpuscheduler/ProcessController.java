@@ -34,6 +34,8 @@ public class ProcessController implements Initializable {
     @FXML
     private Button addProcess;
     @FXML
+    private Button deleteProcess;
+    @FXML
     private Button startScheduling;
 
 
@@ -181,7 +183,8 @@ public class ProcessController implements Initializable {
             additionalField.setLayoutY(145);
             additionalField.setPrefWidth(85);
             pane.getChildren().add(additionalField);
-            addProcess.setLayoutX(226);
+            addProcess.setLayoutY(186);
+            deleteProcess.setLayoutY(186);
 
             TableColumn<Process, Integer> priorityColumn = new TableColumn<>("Priority");
             priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
@@ -199,7 +202,8 @@ public class ProcessController implements Initializable {
             additionalField.setLayoutY(145);
             additionalField.setPrefWidth(85);
             pane.getChildren().add(additionalField);
-            addProcess.setLayoutX(224);
+            addProcess.setLayoutY(186);
+            deleteProcess.setLayoutY(186);
             //  RR scheduler = new RR(Integer.parseInt(addProcess.getText()));
 
         }
