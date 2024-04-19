@@ -44,10 +44,12 @@ public class LiveScheduling extends Application implements Runnable {
     private int lastx = 20;
     private int y = 50;
     private int last_pid = -1;
+    private int quantum;
 
-    LiveScheduling(PriorityQueue<Process> processes, HashMap<Integer, Color> colors) {
+    LiveScheduling(PriorityQueue<Process> processes, HashMap<Integer, Color> colors, int quantum) {
         this.processes = processes;
         this.colors = colors;
+        this.quantum = quantum;
     }
 
     @Override
@@ -167,7 +169,7 @@ public class LiveScheduling extends Application implements Runnable {
 
         switch (HelloController.processType) {
             case "FCFS" -> scheduler = new FirstComeFirstServe();
-            case "Round Robin" -> scheduler = new RR(3);
+            case "Round Robin" -> scheduler = new RR(quantum);
             case "SJF Non-Preemptive" -> scheduler = new SJFNonPreemptive();
             case "SJF Preemptive" -> scheduler = new SJFPreemptive();
             case "Priority Non-Preemptive" -> scheduler = new Priority_NonPreemptive();

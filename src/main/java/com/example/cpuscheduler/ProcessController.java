@@ -136,7 +136,7 @@ public class ProcessController implements Initializable {
     protected void onLiveTable() throws IOException {
         PriorityQueue<Process> p4 = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
         p4=onClick();
-        LiveScheduling liveTable= new LiveScheduling(processes,colors);
+        LiveScheduling liveTable= new LiveScheduling(processes,colors, quantum);
         Stage liveStage =new Stage();
         liveTable.start(liveStage);
         liveStage.show();
