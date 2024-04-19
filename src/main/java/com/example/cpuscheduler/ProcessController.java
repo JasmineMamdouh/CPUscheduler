@@ -37,9 +37,10 @@ public class ProcessController implements Initializable {
     private TableView<Process> table = new TableView<>();
     TextField additionalField = new TextField();
     @FXML
+
     protected void onAddButtonClick() {
         Process process;
-        if(HelloController.processType.contains("Priority")) {
+        if (HelloController.processType.contains("Priority")) {
             process = new Process(
                     Integer.parseInt(pid.getText()),
                     Integer.parseInt(burstTime.getText()),
@@ -53,8 +54,9 @@ public class ProcessController implements Initializable {
                     Integer.parseInt(arrivalTime.getText())
             );
 
-            if (HelloController.processType.contains("Round")) {
+            if (HelloController.processType.contains("Round") && quantum == 0) {
                 quantum = Integer.parseInt(additionalField.getText());
+                additionalField.setDisable(true); // Disable the additional field after setting the quantum
             }
         }
         processes.add(process);
@@ -65,6 +67,7 @@ public class ProcessController implements Initializable {
         colors.put(process.getPid(), color);
         table.getItems().add(process);
     }
+
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
