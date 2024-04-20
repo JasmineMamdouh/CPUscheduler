@@ -1,9 +1,14 @@
 package com.example.cpuscheduler;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,9 +28,14 @@ public class HelloController implements Initializable {
     protected void onDoneButtonClick() throws IOException {
         processType = choiceBox.getValue();
         if(processType != null) {
-            ProcessApplication processApplication = new ProcessApplication();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("processes-view.fxml"));
             Stage processStage = new Stage();
-            processApplication.start(processStage);
+            Image iconImage = new Image(getClass().getResourceAsStream("icon.png"));
+            processStage.getIcons().add(iconImage);
+            processStage.setTitle("CPU Scheduler");
+            processStage.setScene(new Scene((Pane)loader.load()));
+            // ProcessController cont = loader.<ProcessController>getController();
+            // cont.initData(quantum);
             processStage.show();
         }
     }

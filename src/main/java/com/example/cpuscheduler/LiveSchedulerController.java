@@ -124,7 +124,7 @@ public class LiveSchedulerController implements Runnable {
             Platform.runLater(() -> {
                 while (!processes.isEmpty() && time == processes.get(0).getArrivalTime()) {
                     scheduler.enqueue(processes.get(0));
-                    processesList.add(processes.removeFirst());
+                    processesList.add(processes.remove(0));
                 }
 
                 processesList.sort((p1, p2) -> p1.getStartTime() - p2.getStartTime());

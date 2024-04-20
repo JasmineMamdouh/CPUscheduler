@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class RR extends Schedulers {
     private int quantum; //RR timeslice
-    private int itr=1;// iterator to keep track if the timeslice finished or not.
+    private int itr=0;// iterator to keep track if the timeslice finished or not.
     Process running;
 
     public RR(int quantum){

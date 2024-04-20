@@ -68,7 +68,7 @@ public class NotLiveSchedulerController {
         int time = 0;
         while (true) {
             while (!processes.isEmpty() && time == processes.get(0).getArrivalTime()) {
-                scheduler.enqueue(processes.removeFirst());
+                scheduler.enqueue(processes.remove(0));
             }
 
             if (!scheduler.fetchNextTask(time) && processes.isEmpty())
