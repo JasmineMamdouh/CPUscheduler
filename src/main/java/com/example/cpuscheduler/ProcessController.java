@@ -188,7 +188,7 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onLiveTable() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("schedulers.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("live-scheduler.fxml"));
         Stage schedulerStage = new Stage();
         Image iconImage = new Image(getClass().getResourceAsStream("icon.png"));
         schedulerStage.getIcons().add(iconImage);
