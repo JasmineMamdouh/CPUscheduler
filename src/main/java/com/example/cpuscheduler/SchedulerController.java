@@ -82,6 +82,18 @@ public class SchedulerController implements Runnable {
         this.processes = processes;
         this.processColorMap = processColorMap;
         this.quantum = quantum;
+
+        switch (HelloController.processType) {
+            case "FCFS" -> scheduler = new FirstComeFirstServe();
+            case "Round Robin" -> scheduler = new RR(quantum);
+            case "SJF Non-Preemptive" -> scheduler = new SJFNonPreemptive();
+            case "SJF Preemptive" -> scheduler = new SJFPreemptive();
+            case "Priority Non-Preemptive" -> scheduler = new Priority_NonPreemptive();
+            case "Priority Preemptive" -> scheduler = new PriorityPreemptive();
+            default -> scheduler = new FirstComeFirstServe();
+        }
+
+        executScheduler();
     }
 
     private void calculateAndDisplayAverages() {
@@ -209,23 +221,11 @@ public class SchedulerController implements Runnable {
         startButton.setOnAction(event -> executScheduler());
         pauseButton.setOnAction(event -> t.cancel(false));
 
-        switch (HelloController.processType) {
-            case "FCFS" -> scheduler = new FirstComeFirstServe();
-            case "Round Robin" -> scheduler = new RR(quantum);
-            case "SJF Non-Preemptive" -> scheduler = new SJFNonPreemptive();
-            case "SJF Preemptive" -> scheduler = new SJFPreemptive();
-            case "Priority Non-Preemptive" -> scheduler = new Priority_NonPreemptive();
-            case "Priority Preemptive" -> scheduler = new PriorityPreemptive();
-            default -> scheduler = new FirstComeFirstServe();
-        }
-
         prioritySection.managedProperty().bind(prioritySection.visibleProperty());
 
         if (HelloController.processType.contains("Priority")) {
             prioritySection.setVisible(true);
         }
-
-        executScheduler();
     }
 
     private void onAddButtonClick(){
