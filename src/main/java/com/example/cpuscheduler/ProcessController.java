@@ -194,7 +194,7 @@ public class ProcessController implements Initializable {
         schedulerStage.getIcons().add(iconImage);
         schedulerStage.setTitle("Live Scheduling");
         schedulerStage.setScene(new Scene((Pane) loader.load()));
-        SchedulerController cont = loader.<SchedulerController>getController();
+        LiveSchedulerController cont = loader.<LiveSchedulerController>getController();
         cont.initData(this.getTableProcesses(), processColorMap, quantum);
         schedulerStage.show();
     }

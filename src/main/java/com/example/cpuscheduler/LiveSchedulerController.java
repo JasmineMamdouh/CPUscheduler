@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class SchedulerController implements Runnable {
+public class LiveSchedulerController implements Runnable {
     @FXML
     private TableView<Process> processTable;
     @FXML
