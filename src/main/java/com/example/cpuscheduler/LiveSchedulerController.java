@@ -136,7 +136,10 @@ public class LiveSchedulerController implements Runnable {
                 calculateAndDisplayAverages();
 
                 if (!running && processes.isEmpty()) {
-                    chartPane.getChildren().remove(text);
+                    if (sameProcess) {
+                        chartPane.getChildren().remove(text);
+                    }
+                    sameProcess = false;
                     text = new Text(time + "s");
                     text.setFont(new Font(15));
                     text.setX(xAxis - text.getLayoutBounds().getWidth() / 2);
@@ -253,8 +256,8 @@ public class LiveSchedulerController implements Runnable {
                 }
             }
             if(
-                    Integer.parseInt(pidTextField.getText()) < 0
-                            || Integer.parseInt(arrivalTimeTextField.getText()) < 0
+                Integer.parseInt(pidTextField.getText()) < 0
+                        || Integer.parseInt(arrivalTimeTextField.getText()) < 0
             ) {
                 safe =  false;
                 warningLabel.setText("Only Non Negative Integers Allowed.");
