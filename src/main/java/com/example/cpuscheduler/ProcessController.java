@@ -18,9 +18,9 @@ import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 
 
@@ -157,12 +157,13 @@ public class ProcessController implements Initializable {
         }
     }
 
-    private PriorityQueue<Process> getTableProcesses() {
-        PriorityQueue<Process> processesQueue = new PriorityQueue<Process>((px, py) -> px.getArrivalTime() - py.getArrivalTime());
+    private ArrayList<Process> getTableProcesses() {
+        ArrayList<Process> processesQueue = new ArrayList<Process>();
         processes =  processTable.getItems();
         for (Process process : processes) {
             processesQueue.add((Process)process.clone());
         }
+        processesQueue.sort((p1, p2) -> p1.getArrivalTime() - p2.getArrivalTime());
         return processesQueue;
     }
 

@@ -19,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -64,7 +63,7 @@ public class LiveSchedulerController implements Runnable {
     private Button pauseButton;
 
 
-    private PriorityQueue<Process> processes;
+    private ArrayList<Process> processes;
     private ObservableList<Process> processesList = FXCollections.observableArrayList();
     private ScheduledFuture<?> t;
     private Schedulers scheduler;
@@ -77,7 +76,7 @@ public class LiveSchedulerController implements Runnable {
     private int last_pid = -1;
     private ArrayList<Shape> holder = new ArrayList<>(2);
     
-    public void initData(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
+    public void initData(ArrayList<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
         this.processColorMap = processColorMap;
 
@@ -117,9 +116,9 @@ public class LiveSchedulerController implements Runnable {
     public void run() {
         try {
             Platform.runLater(() -> {
-                while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                    scheduler.enqueue(processes.peek());
-                    processesList.add(processes.poll());
+                while (!processes.isEmpty() && time == processes.get(0).getArrivalTime()) {
+                    scheduler.enqueue(processes.get(0));
+                    processesList.add(processes.removeFirst());
                 }
 
                 processesList.sort((p1, p2) -> p1.getStartTime() - p2.getStartTime());

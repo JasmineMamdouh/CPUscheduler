@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class NotLiveSchedulerController {
     @FXML
@@ -38,12 +37,12 @@ public class NotLiveSchedulerController {
     private Label avgWaitTime;
 
 
-    private PriorityQueue<Process> processes;
+    private ArrayList<Process> processes;
     private ObservableList<Process> processesList = FXCollections.observableArrayList();
     private Schedulers scheduler;
     private Map<Integer, Color> processColorMap;
     
-    public void initData(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
+    public void initData(ArrayList<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
         this.processColorMap = processColorMap;
 
@@ -63,8 +62,8 @@ public class NotLiveSchedulerController {
     private void startScheduler(Schedulers scheduler) {
         int time = 0;
         while (true) {
-            while (!processes.isEmpty() && time == processes.peek().getArrivalTime()) {
-                scheduler.enqueue(processes.poll());
+            while (!processes.isEmpty() && time == processes.get(0).getArrivalTime()) {
+                scheduler.enqueue(processes.removeFirst());
             }
 
             if (!scheduler.fetchNextTask(time) && processes.isEmpty())
