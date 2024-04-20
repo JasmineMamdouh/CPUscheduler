@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.NotLiveSchedulerController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="41.0" prefWidth="312.0" style="-fx-background-color: #E8D5C4; -fx-border-radius: 10px;" text="Processes Table" textOverrun="WORD_ELLIPSIS">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <TableView fx:id="processTable" editable="true" layoutX="392.0" layoutY="15.0" prefHeight="375.0" prefWidth="500.0">
+               <columns>
+                  <TableColumn fx:id="pidColumn" prefWidth="75.0" text="Process ID" />
+                  <TableColumn fx:id="arrivalTimeColumn" prefWidth="79.0" text="Arrival Time" />
+                  <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Start Time" />
+                  <TableColumn fx:id="endTimeColumn" prefWidth="75.0" text="End Time" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </TableView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="41.0" prefWidth="312.0" style="-fx-background-color: #E8D5C4; -fx-border-radius: 10px;" text="Gantt Chart" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="106.0" prefWidth="1280.0">
+               <children>
+                  <Pane fx:id="chartPane" layoutX="13.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="45.0" prefHeight="56.0" prefWidth="1255.0">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding></Pane>
+                  <HBox layoutX="216.0" layoutY="18.0" prefHeight="27.0" prefWidth="968.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="timeLabel" alignment="TOP_LEFT" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="27.0" prefWidth="148.0" text="Time = 0s">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="avgTurnaroundTime" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="27.0" prefWidth="280.0" text="Avg. Turnaround Time = 0s">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="avgWaitTime" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="27.0" prefWidth="280.0" text="Avg. Waiting Time= 0s" textAlignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
