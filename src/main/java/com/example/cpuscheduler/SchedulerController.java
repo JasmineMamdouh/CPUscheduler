@@ -219,8 +219,10 @@ public class SchedulerController implements Runnable {
             default -> scheduler = new FirstComeFirstServe();
         }
 
+        prioritySection.managedProperty().bind(prioritySection.visibleProperty());
+
         if (HelloController.processType.contains("Priority")) {
-            prioritySection.setDisable(false);
+            prioritySection.setVisible(true);
         }
 
         executScheduler();
