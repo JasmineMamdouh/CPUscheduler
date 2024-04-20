@@ -30,6 +30,12 @@ public class LiveSchedulerController implements Runnable {
     @FXML
     private TableColumn<Process, Integer> pidColumn;
     @FXML
+    private TableColumn<Process, Integer> priorityColumn;
+    @FXML
+    private TableColumn<Process, Integer> arrivalTimeColumn;
+    @FXML
+    private TableColumn<Process, Integer> burstTimeColumn;
+    @FXML
     private TableColumn<Process, Integer> startTimeColumn;
     @FXML
     private TableColumn<Process, Integer> endTimeColumn;
@@ -211,9 +217,12 @@ public class LiveSchedulerController implements Runnable {
     @FXML
     public void initialize() {
         pidColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("pid"));
+        priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
+        arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("arrivalTime"));
+        burstTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("burstTime"));
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("startTime"));
-        remainingTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("remainingTime"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("completionTime"));
+        remainingTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("remainingTime"));
 
         processTable.setItems(processesList);
 
@@ -224,6 +233,7 @@ public class LiveSchedulerController implements Runnable {
         prioritySection.managedProperty().bind(prioritySection.visibleProperty());
 
         if (HelloController.processType.contains("Priority")) {
+            priorityColumn.setVisible(true);
             prioritySection.setVisible(true);
         }
     }

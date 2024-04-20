@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cpuscheduler.NotLiveSchedulerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.NotLiveSchedulerController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +29,9 @@
             <TableView fx:id="processTable" editable="true" layoutX="392.0" layoutY="15.0" prefHeight="375.0" prefWidth="500.0">
                <columns>
                   <TableColumn fx:id="pidColumn" prefWidth="75.0" text="Process ID" />
+                  <TableColumn fx:id="priorityColumn" prefWidth="75.0" text="Priority" visible="false" />
                   <TableColumn fx:id="arrivalTimeColumn" prefWidth="79.0" text="Arrival Time" />
+                  <TableColumn fx:id="burstTimeColumn" prefWidth="79.0" text="Burst Time" />
                   <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Start Time" />
                   <TableColumn fx:id="endTimeColumn" prefWidth="75.0" text="End Time" />
                </columns>

@@ -22,11 +22,16 @@ public class NotLiveSchedulerController {
     @FXML
     private TableColumn<Process, Integer> pidColumn;
     @FXML
+    private TableColumn<Process, Integer> priorityColumn;
+    @FXML
+    private TableColumn<Process, Integer> arrivalTimeColumn;
+    @FXML
+    private TableColumn<Process, Integer> burstTimeColumn;
+    @FXML
     private TableColumn<Process, Integer> startTimeColumn;
     @FXML
     private TableColumn<Process, Integer> endTimeColumn;
-    @FXML
-    private TableColumn<Process, Integer> arrivalTimeColumn;
+    
     @FXML
     private Pane chartPane;
     @FXML
@@ -75,11 +80,17 @@ public class NotLiveSchedulerController {
     @FXML
     public void initialize() {
         pidColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("pid"));
+        priorityColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("priority"));
         arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("arrivalTime"));
+        burstTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("burstTime"));
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("startTime"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<Process, Integer>("completionTime"));
 
         processTable.setItems(processesList);
+
+        if (HelloController.processType.contains("Priority")) {
+            priorityColumn.setVisible(true);
+        }
     }
 
     public void runScheduler() {
