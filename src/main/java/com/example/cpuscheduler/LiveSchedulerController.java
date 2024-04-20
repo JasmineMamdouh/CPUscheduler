@@ -187,6 +187,7 @@ public class LiveSchedulerController implements Runnable {
                 xAxis += width;
                 rectangle.setFill(color);
                 holder.add(rectangle);
+                // chartPane.getChildren().add(rectangle);
 
                 if (current_pid != last_pid) {
                     Text processName = new Text();
@@ -199,10 +200,12 @@ public class LiveSchedulerController implements Runnable {
                     processName.setLayoutX(rectangle.getLayoutX() + processName.getLayoutBounds().getWidth());
                     processName.setLayoutY(rectangle.getLayoutY() + processName.getLayoutBounds().getHeight());
                     holder.add(processName);
+                    // chartPane.getChildren().add(processName);
                 }
 
                 last_pid = current_pid;
                 time++;
+                arrivalTimeTextField.setText(String.valueOf(time));
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -239,7 +242,6 @@ public class LiveSchedulerController implements Runnable {
     }
 
     private void onAddButtonClick(){
-        boolean safe = true;
         Process process;
         warningLabel.setText("");
         if(
@@ -247,71 +249,88 @@ public class LiveSchedulerController implements Runnable {
             || burstTimeTextField.getText().isEmpty()
             || arrivalTimeTextField.getText().isEmpty()
         ) {
-            safe = false;
             warningLabel.setText("Please Fill All The Fields.");
+            return;
         }
         if (
             HelloController.processType.contains("Priority")
             && priorityTextField.getText().isEmpty()
         ) {
-            safe = false;
             warningLabel.setText("Please Fill All The Fields.");
+            return;
         }
-
-        if(safe){
-            for (Process proc : processes) {
-                if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
-                    safe = false;
-                    warningLabel.setText("This PID Already Exists.");
-                }
+        for (Process proc : processes) {
+            if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
+                warningLabel.setText("This PID Already Exists.");
+                return;
             }
-            if(
-                Integer.parseInt(pidTextField.getText()) < 0
-                        || Integer.parseInt(arrivalTimeTextField.getText()) < 0
-            ) {
-                safe =  false;
-                warningLabel.setText("Only Non Negative Integers Allowed.");
+        }
+        for (Process proc : processesList) {
+            if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
+                warningLabel.setText("This PID Already Exists.");
+                return;
             }
-            if (Integer.parseInt(burstTimeTextField.getText()) <= 0) {
-                safe = false;
-                warningLabel.setText("Burst Time Should Be A Positive Integer.");
-            }
-            if (HelloController.processType.contains("Priority")) {
-                if(Integer.parseInt(priorityTextField.getText()) < 0
-                        || Integer.parseInt(priorityTextField.getText()) > 10) {
-                    safe = false;
+        }
+        if(
+            Integer.parseInt(pidTextField.getText()) < 0
+            || Integer.parseInt(arrivalTimeTextField.getText()) < 0
+        ) {
+            warningLabel.setText("Only Non Negative Integers Allowed.");
+            return;
+        }
+        if(
+            Integer.parseInt(pidTextField.getText()) < 0
+            || Integer.parseInt(arrivalTimeTextField.getText()) < 0
+        ) {
+            warningLabel.setText("Only Non Negative Integers Allowed.");
+            return;
+        }
+        if (Integer.parseInt(arrivalTimeTextField.getText()) < time) {
+            warningLabel.setText("Arrival Time Should Be " + time + " At Least.");
+            return;
+        }
+        if (Integer.parseInt(burstTimeTextField.getText()) <= 0) {
+            warningLabel.setText("Burst Time Should Be A Positive Integer.");
+            return;
+        }
+        if (HelloController.processType.contains("Priority")) {
+            if (Integer.parseInt(priorityTextField.getText()) < 0
+                || Integer.parseInt(priorityTextField.getText()) > 10) {
                     warningLabel.setText("Priority Should Be Between 0 And 10.");
-                }
+                    return;
             }
         }
-        if(safe) {
-            if (HelloController.processType.contains("Priority")) {
-                process = new Process(
-                        Integer.parseInt(pidTextField.getText()),
-                        Integer.parseInt(burstTimeTextField.getText()),
-                        Integer.parseInt(priorityTextField.getText()),
-                        Integer.parseInt(arrivalTimeTextField.getText())
-                );
-                priorityTextField.clear();
-            } else {
-                process = new Process(
-                        Integer.parseInt(pidTextField.getText()),
-                        Integer.parseInt(burstTimeTextField.getText()),
-                        Integer.parseInt(arrivalTimeTextField.getText())
-                );
-            }
-
-            double red = Math.random();
-            double green = Math.random();
-            double blue = Math.random();
-            Color color = Color.color(red, green, blue);
-            processColorMap.put(process.getPid(), color);
-            processes.add(process);
-
-            // Clearing the fields
-            pidTextField.clear();
-            arrivalTimeTextField.clear();
-            burstTimeTextField.clear();
+                
+        if (HelloController.processType.contains("Priority")) {
+            process = new Process(
+                    Integer.parseInt(pidTextField.getText()),
+                    Integer.parseInt(burstTimeTextField.getText()),
+                    Integer.parseInt(priorityTextField.getText()),
+                    Integer.parseInt(arrivalTimeTextField.getText())
+            );
+            priorityTextField.clear();
+        } else {
+            process = new Process(
+                    Integer.parseInt(pidTextField.getText()),
+                    Integer.parseInt(burstTimeTextField.getText()),
+                    Integer.parseInt(arrivalTimeTextField.getText())
+            );
         }
+
+        double red = Math.random();
+        double green = Math.random();
+        double blue = Math.random();
+        Color color = Color.color(red, green, blue);
+        processColorMap.put(process.getPid(), color);
+        processes.add(process);
+
+        // if(t.isCancelled()){
+        //     executScheduler();
+        // }
+
+        // Clearing the fields
+        pidTextField.clear();
+        arrivalTimeTextField.clear();
+        burstTimeTextField.clear();
     }
 }
