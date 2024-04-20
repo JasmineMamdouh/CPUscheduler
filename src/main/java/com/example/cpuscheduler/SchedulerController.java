@@ -68,20 +68,18 @@ public class SchedulerController implements Runnable {
     private ObservableList<Process> processesList = FXCollections.observableArrayList();
     private ScheduledFuture<?> t;
     private Schedulers scheduler;
-    private int time = 0;
     private Map<Integer, Color> processColorMap;
     private ArrayList<GanttProcess> ganttChart;
+    private int time = 0;
     private Text text;
     private boolean sameProcess = false;
-    private int lastx = 14;
+    private int xAxis = 14;
     private int last_pid = -1;
-    private int quantum;
     private ArrayList<Shape> holder = new ArrayList<>(2);
     
     public void initData(PriorityQueue<Process> processes, Map<Integer, Color> processColorMap, int quantum) {
         this.processes = processes;
         this.processColorMap = processColorMap;
-        this.quantum = quantum;
 
         switch (HelloController.processType) {
             case "FCFS" -> scheduler = new FirstComeFirstServe();
@@ -130,6 +128,7 @@ public class SchedulerController implements Runnable {
 
                 boolean running = scheduler.fetchNextTask(time);
 
+                int yAxis = (int)chartPane.getLayoutBounds().getCenterY();
                 int width = 50;
                 int length = 30;
 
@@ -140,9 +139,9 @@ public class SchedulerController implements Runnable {
                 if (!running && processes.isEmpty()) {
                     chartPane.getChildren().remove(text);
                     text = new Text(time + "s");
-                    text.setX(lastx);
-                    text.setY(length + 17);
-                    text.setFont(new Font(12));
+                    text.setFont(new Font(15));
+                    text.setX(xAxis - text.getLayoutBounds().getWidth() / 2);
+                    text.setY(yAxis + length + text.getLayoutBounds().getHeight());
                     chartPane.getChildren().addAll(holder);
                     holder.clear();
                     chartPane.getChildren().add(text);
@@ -169,28 +168,28 @@ public class SchedulerController implements Runnable {
                 }
 
                 text = new Text(time + "s");
-                text.setX(lastx);
-                text.setY(length + 17);
-                text.setFont(new Font(12));
+                text.setFont(new Font(15));
+                text.setX(xAxis - text.getLayoutBounds().getWidth() / 2);
+                text.setY(yAxis + length + text.getLayoutBounds().getHeight());
                 chartPane.getChildren().add(text);
 
                 Rectangle rectangle = new Rectangle(width, length);
-                rectangle.setLayoutX(lastx);
-                rectangle.setLayoutY(6);
-                lastx += width;
+                rectangle.setLayoutX(xAxis);
+                rectangle.setLayoutY(yAxis);
+                xAxis += width;
                 rectangle.setFill(color);
                 holder.add(rectangle);
 
                 if (current_pid != last_pid) {
                     Text processName = new Text();
                     if (current_pid == -1) {
-                        processName.setText(" "); // Adjust format if needed
+                        processName.setText(" ");
                     } else {
                         processName.setText("P" + current_pid);
                     }
                     processName.setFont(new Font(15));
-                    processName.setLayoutX(rectangle.getLayoutX() + 13);
-                    processName.setLayoutY(rectangle.getLayoutY() + 20);
+                    processName.setLayoutX(rectangle.getLayoutX() + processName.getLayoutBounds().getWidth());
+                    processName.setLayoutY(rectangle.getLayoutY() + processName.getLayoutBounds().getHeight());
                     holder.add(processName);
                 }
 
@@ -206,7 +205,6 @@ public class SchedulerController implements Runnable {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         t = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
     }
-
 
     @FXML
     public void initialize() {
