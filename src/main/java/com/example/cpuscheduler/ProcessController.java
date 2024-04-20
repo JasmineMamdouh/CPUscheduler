@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -184,6 +185,9 @@ public class ProcessController implements Initializable {
     protected void onLiveTable() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("schedulers.fxml"));
         Stage schedulerStage = new Stage();
+        Image iconImage = new Image(getClass().getResourceAsStream("icon.png"));
+        schedulerStage.getIcons().add(iconImage);
+        schedulerStage.setTitle("Live Scheduling");
         schedulerStage.setScene(new Scene((Pane) loader.load()));
         SchedulerController cont = loader.<SchedulerController>getController();
         cont.initData(this.getTableProcesses(), processColorMap, quantum);

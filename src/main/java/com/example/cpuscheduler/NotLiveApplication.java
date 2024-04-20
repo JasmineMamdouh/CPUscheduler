@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -51,7 +52,8 @@ public class NotLiveApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Not Live Scheduling");
-
+        Image iconImage = new Image(getClass().getResourceAsStream("icon.png"));
+        stage.getIcons().add(iconImage);
         AnchorPane layout = new AnchorPane();
         Label label = new Label("Scheduling Table");
 
