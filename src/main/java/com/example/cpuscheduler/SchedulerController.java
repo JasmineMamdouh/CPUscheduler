@@ -238,14 +238,14 @@ public class SchedulerController implements Runnable {
             || arrivalTimeTextField.getText().isEmpty()
         ) {
             safe = false;
-            warningLabel.setText("Please Fill All The Fields");
+            warningLabel.setText("Please Fill All The Fields.");
         }
         if (
             HelloController.processType.contains("Priority")
             && priorityTextField.getText().isEmpty()
         ) {
             safe = false;
-            warningLabel.setText("Please Fill All The Fields");
+            warningLabel.setText("Please Fill All The Fields.");
         }
 
         if(safe){
@@ -255,10 +255,22 @@ public class SchedulerController implements Runnable {
                     warningLabel.setText("This PID Already Exists.");
                 }
             }
-            for (Process proc : processesList) {
-                if (proc.getPid() == Integer.parseInt(pidTextField.getText())) {
+            if(
+                    Integer.parseInt(pidTextField.getText()) < 0
+                            || Integer.parseInt(arrivalTimeTextField.getText()) < 0
+            ) {
+                safe =  false;
+                warningLabel.setText("Only Non Negative Integers Allowed.");
+            }
+            if (Integer.parseInt(burstTimeTextField.getText()) <= 0) {
+                safe = false;
+                warningLabel.setText("Burst Time Should Be A Positive Integer.");
+            }
+            if (HelloController.processType.contains("Priority")) {
+                if(Integer.parseInt(priorityTextField.getText()) < 0
+                        || Integer.parseInt(priorityTextField.getText()) > 10) {
                     safe = false;
-                    warningLabel.setText("This PID Already Exists.");
+                    warningLabel.setText("Priority Should Be Between 0 And 10.");
                 }
             }
         }

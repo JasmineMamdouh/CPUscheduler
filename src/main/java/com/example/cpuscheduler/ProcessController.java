@@ -64,13 +64,13 @@ public class ProcessController implements Initializable {
                 || arrivalTime.getText().isEmpty()
         ) {
             safe = false;
-            failText.setText("Please Fill All The Fields");
+            failText.setText("Please Fill All The Fields.");
         }
         if (HelloController.processType.contains("Priority")
                 || (HelloController.processType.contains("Round") && !quantumSet)) {
             if(additionalField.getText().isEmpty()) {
                 safe = false;
-                failText.setText("Please Fill All The Fields");
+                failText.setText("Please Fill All The Fields.");
             }
         }
         if(safe){
@@ -78,6 +78,30 @@ public class ProcessController implements Initializable {
                 if (proc.getPid() == Integer.parseInt(pid.getText())) {
                     safe = false;
                     failText.setText("This PID Already Exists.");
+                }
+            }
+            if(
+                    Integer.parseInt(pid.getText()) < 0
+                    || Integer.parseInt(arrivalTime.getText()) < 0
+            ) {
+                safe =  false;
+                failText.setText("Only Non Negative Integers Allowed.");
+            }
+            if (Integer.parseInt(burstTime.getText()) <= 0) {
+                safe = false;
+                failText.setText("Burst Time Should Be A Positive Integer.");
+            }
+            if (HelloController.processType.contains("Priority")) {
+                if(Integer.parseInt(additionalField.getText()) < 0
+                    || Integer.parseInt(additionalField.getText()) > 10) {
+                    safe = false;
+                    failText.setText("Priority Should Be Between 0 And 10.");
+                }
+            }
+            if(HelloController.processType.contains("Round") && !quantumSet) {
+                if (Integer.parseInt(additionalField.getText()) <= 0) {
+                    safe = false;
+                    failText.setText("Quantum Should Be A Positive Integer.");
                 }
             }
         }
