@@ -94,6 +94,14 @@ public class NotLiveSchedulerController {
         int width = 50;
         int length = 30;
         int time = 0;
+
+        //Draw time 0
+        Text timeText = new Text(time + "s");
+        timeText.setFont(new Font(15));
+        timeText.setX(xAxis - (timeText.getLayoutBounds().getWidth()) / 2); // Adjust padding as needed
+        timeText.setY(yAxis + length + timeText.getLayoutBounds().getHeight());
+        chartPane.getChildren().addAll(timeText);
+
         //Gantt Chart
         for(int i = 0; i < ganttProcesses.size() - 1; i++) {
             GanttProcess ganttProcess = ganttProcesses.get(i);
@@ -105,7 +113,7 @@ public class NotLiveSchedulerController {
             xAxis += ganttProcess.getRunningTime() * width;
 
             time += ganttProcess.getRunningTime();
-            Text timeText = new Text(time + "s");
+            timeText = new Text(time + "s");
             timeText.setFont(new Font(15));
             timeText.setX(xAxis - (timeText.getLayoutBounds().getWidth())/ 2); // Adjust padding as needed
             timeText.setY(yAxis + length + timeText.getLayoutBounds().getHeight());
