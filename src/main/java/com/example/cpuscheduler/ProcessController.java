@@ -3,7 +3,10 @@ package com.example.cpuscheduler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -140,12 +143,22 @@ public class ProcessController implements Initializable {
         notLiveStage.show();
     }
 
+    // @FXML
+    // protected void onLiveTable() throws IOException {
+    //     LiveScheduling liveTable= new LiveScheduling(this.getTableProcesses(), processColorMap, quantum);
+    //     Stage liveStage =new Stage();
+    //     liveTable.start(liveStage);
+    //     liveStage.show();
+    // }
+
     @FXML
     protected void onLiveTable() throws IOException {
-        LiveScheduling liveTable= new LiveScheduling(this.getTableProcesses(), processColorMap, quantum);
-        Stage liveStage =new Stage();
-        liveTable.start(liveStage);
-        liveStage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("schedulers.fxml"));
+        Stage schedulerStage = new Stage();
+        schedulerStage.setScene(new Scene((Pane) loader.load()));
+        SchedulerController cont = loader.<SchedulerController>getController();
+        cont.initData(this.getTableProcesses(), processColorMap, quantum);
+        schedulerStage.show();
     }
 
     @Override
