@@ -175,10 +175,15 @@ public class ProcessController implements Initializable {
 
     @FXML
     protected void onNotLiveButtonClick() throws IOException {
-        NotLiveApplication notLiveApplication = new NotLiveApplication(this.getTableProcesses(), processColorMap, quantum);
-        Stage notLiveStage = new Stage();
-        notLiveApplication.start(notLiveStage);
-        notLiveStage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("non-live-scheduler.fxml"));
+        Stage schedulerStage = new Stage();
+        Image iconImage = new Image(getClass().getResourceAsStream("icon.png"));
+        schedulerStage.getIcons().add(iconImage);
+        schedulerStage.setTitle("Not Live Scheduling");
+        schedulerStage.setScene(new Scene((Pane) loader.load()));
+        NotLiveSchedulerController cont = loader.<NotLiveSchedulerController>getController();
+        cont.initData(this.getTableProcesses(), processColorMap, quantum);
+        schedulerStage.show();
     }
 
     @FXML
