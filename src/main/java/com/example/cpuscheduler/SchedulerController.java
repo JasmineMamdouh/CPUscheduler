@@ -129,8 +129,8 @@ public class SchedulerController implements Runnable {
                     chartPane.getChildren().remove(text);
                     text = new Text(time + "s");
                     text.setX(lastx);
-                    text.setY(length + 15);
-                    text.setFont(new Font(10));
+                    text.setY(length + 17);
+                    text.setFont(new Font(12));
                     chartPane.getChildren().addAll(holder);
                     holder.clear();
                     chartPane.getChildren().add(text);
@@ -158,8 +158,8 @@ public class SchedulerController implements Runnable {
 
                 text = new Text(time + "s");
                 text.setX(lastx);
-                text.setY(length + 15);
-                text.setFont(new Font(10));
+                text.setY(length + 17);
+                text.setFont(new Font(12));
                 chartPane.getChildren().add(text);
 
                 Rectangle rectangle = new Rectangle(width, length);
@@ -170,9 +170,13 @@ public class SchedulerController implements Runnable {
                 holder.add(rectangle);
 
                 if (current_pid != last_pid) {
-                    Text processName = new Text("P" + current_pid);
+                    Text processName = new Text();
+                    if (current_pid == -1) {
+                        processName.setText(" "); // Adjust format if needed
+                    } else {
+                        processName.setText("P" + current_pid);
+                    }
                     processName.setFont(new Font(15));
-
                     processName.setLayoutX(rectangle.getLayoutX() + 13);
                     processName.setLayoutY(rectangle.getLayoutY() + 20);
                     holder.add(processName);
