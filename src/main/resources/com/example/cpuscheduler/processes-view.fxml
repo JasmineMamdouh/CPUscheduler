@@ -17,7 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="1920.0" maxWidth="1080.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cpuscheduler.ProcessController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
@@ -76,7 +75,10 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="pidTextField" minHeight="-Infinity" prefHeight="30.0" />
+                                    <TextField fx:id="pidTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
                                  </children>
                                  <FlowPane.margin>
                                     <Insets />
@@ -89,7 +91,10 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="arrivalTimeTextField" minHeight="-Infinity" prefHeight="30.0" />
+                                    <TextField fx:id="arrivalTimeTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
@@ -99,7 +104,10 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="burstTimeTextField" minHeight="-Infinity" prefHeight="30.0" />
+                                    <TextField fx:id="burstTimeTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
                                  </children>
                               </VBox>
                               <VBox fx:id="additionalSection" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" visible="false">
@@ -109,7 +117,10 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="additionalTextField" minHeight="-Infinity" prefHeight="30.0" />
+                                    <TextField fx:id="additionalTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></TextField>
                                  </children>
                               </VBox>
                            </children>

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpuscheduler.LiveSchedulerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cpuscheduler.LiveSchedulerController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -97,17 +97,10 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="pidTextField" minHeight="-Infinity" prefHeight="30.0" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label text="Arrival time:">
+                              <TextField fx:id="pidTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
                                  <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="arrivalTimeTextField" minHeight="-Infinity" prefHeight="30.0" />
+                                    <Font size="16.0" />
+                                 </font></TextField>
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" spacing="10.0">
@@ -117,7 +110,23 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="burstTimeTextField" minHeight="-Infinity" prefHeight="30.0" />
+                              <TextField fx:id="burstTimeTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></TextField>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="Arrival time:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="arrivalTimeTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></TextField>
                            </children>
                         </VBox>
                         <VBox fx:id="prioritySection" alignment="CENTER" spacing="10.0" visible="false">
@@ -127,7 +136,10 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="priorityTextField" minHeight="-Infinity" prefHeight="30.0" />
+                              <TextField fx:id="priorityTextField" minHeight="-Infinity" prefHeight="30.0" prefWidth="150.0" style="-fx-alignment: center;">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></TextField>
                            </children>
                         </VBox>
                      </children>
@@ -139,7 +151,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="1280.0" spacing="60.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="pauseButton" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Pause Scheduler" textFill="#eeeeee">
+                  <Button fx:id="pauseButton" mnemonicParsing="false" prefWidth="180.0" style="-fx-background-color: #3A98B9;" text="Pause Scheduler" textFill="#eeeeee">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -147,12 +159,12 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="addProcessButton" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
+                  <Button fx:id="addProcessButton" mnemonicParsing="false" prefWidth="180.0" style="-fx-background-color: #3A98B9;" text="Add Process" textFill="#eeeeee">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="startButton" mnemonicParsing="false" style="-fx-background-color: #3A98B9;" text="Start Scheduler" textFill="#eeeeee">
+                  <Button fx:id="startButton" mnemonicParsing="false" prefWidth="180.0" style="-fx-background-color: #3A98B9;" text="Resume Scheduler" textFill="#eeeeee">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -162,7 +174,7 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="1280.0" spacing="60.0">
+            <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="1280.0" spacing="60.0" style="-fx-alignment: center;">
                <children>
                   <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="30.0" textAlignment="CENTER" textFill="#FF0000">
                      <font>
