@@ -40,6 +40,8 @@ public class NotLiveSchedulerController {
     private Label avgTurnaroundTime;
     @FXML
     private Label avgWaitTime;
+    @FXML
+    private Label timeLabel;
 
 
     private ArrayList<Process> processes;
@@ -144,6 +146,7 @@ public class NotLiveSchedulerController {
         }
 
         //adding texts for the average waiting time and average turn around time
+        timeLabel.setText("Time = " + time + " s");
         avgTurnaroundTime.setText("Avg. Turnaround Time:  " + String.format("%.2f", scheduler.calcAvgTurnaroundTime()) + "s");
         avgWaitTime.setText("Avg. Waiting Time:  " + String.format("%.2f", scheduler.calcAvgWaitingTime()) + "s");
     }
